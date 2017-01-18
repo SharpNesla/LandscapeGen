@@ -14,7 +14,7 @@ namespace Assets.SimpleGenerator
 
         public void Update()
         {
-            for (int i = 0; i < A.Count; i++)
+            for (var i = 0; i < A.Count; i++)
             {
                 var task = A[i];
                 if (task.IsReady)
