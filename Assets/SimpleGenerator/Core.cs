@@ -18,9 +18,8 @@ namespace Assets.SimpleGenerator
         public virtual T GetCell(Pair coordinates)
         {
             var i = _cellInitializer(coordinates);
-            for (var k = 0; k < _modifiers.Length; k++)
+            foreach (var modifier in _modifiers)
             {
-                var modifier = _modifiers[k];
                 modifier.Callback(this, i);
             }
             return i;

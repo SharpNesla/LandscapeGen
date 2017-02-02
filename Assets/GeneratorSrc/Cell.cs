@@ -14,13 +14,15 @@ namespace StandaloneGenerator
         public Biomes Biome;
         public const int NilHeight = 0;
         public float Top, Bot, Left, Right;
-
+        //public float Rdiag, Ldiag;
         public void Init(Cell[,] terrainCells, int x, int y)
         {
             Top     = GetCell(x, y + 1, terrainCells);
             Bot     = GetCell(x, y - 1, terrainCells);
             Left    = GetCell(x - 1, y, terrainCells);
             Right   = GetCell(x + 1, y, terrainCells);
+            //Rdiag = GetCell(x + 1, y + 1, terrainCells);
+            //Ldiag = GetCell(x - 1, y - 1, terrainCells);
         }
         public  float MaxNeighboursHeight()
         {
