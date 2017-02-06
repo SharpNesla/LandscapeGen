@@ -10,7 +10,6 @@ namespace Assets.SimpleGenerator
         private TerrainStorage(TerrainData data)
         {
             Heights = data.GetHeights(0,0,data.heightmapWidth,data.heightmapHeight);
-
         }
 
         public static TerrainStorage FromTerrainData(TerrainData data)

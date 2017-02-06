@@ -1,32 +1,34 @@
 ﻿using System;
 using System.Threading;
 
-namespace Assets.SimpleGenerator
+namespace Test
 {
     public class AsyncTask
     {
-        public volatile bool IsReady;
-        public Action Parallel,SyncTask;
-        private AsyncTask(Action parallelTask, Action SyncTask)
-        {
-            this.Parallel = parallelTask;
-            this.SyncTask = SyncTask;
+        public readonly Action AsyncAction;
+        public readonly Action SyncAction;
+        public Thread Executor;
 
-        }
-
-        public void Invoke()
+        public bool IsReady;
+        public AsyncTask(Action asyncAction, Action syncAction)
         {
-            ThreadPool.QueueUserWorkItem(state =>
+            IsReady = false;
+            AsyncAction = () =>
             {
-                Parallel();
+                asyncAction();
                 IsReady = true;
-            });
+            };
+            SyncAction = syncAction;
         }
 
-        public static void Queue(Action parallelTask, Action SyncTask)
+        public void StopTaskExecuting()
         {
-            var i = new AsyncTask(parallelTask,SyncTask);
-            Dispatcher.Queue(i);
+            Executor.Abort();
+        }
+
+        public void Invoke(ThreadPool pool)
+        {
+            pool.QueueTask(this);
         }
     }
 }

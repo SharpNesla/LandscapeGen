@@ -15,7 +15,6 @@ namespace Assets.SimpleGenerator
             }
             return massive;
         }
-
     }
 
 }
