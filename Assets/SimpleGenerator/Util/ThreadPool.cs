@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading;
 
-namespace Test
+namespace SimpleGenerator.Util
 {
     public class ThreadPool
     {
@@ -25,7 +25,7 @@ namespace Test
         {
             while (true)
             {
-                Thread.Sleep(300);
+                Thread.Sleep(40);
                 try
                 {
                     AsyncTask local = null;

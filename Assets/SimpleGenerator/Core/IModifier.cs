@@ -4,9 +4,9 @@ namespace Assets.SimpleGenerator
 {
     public interface IModifier<T> where T : Cell
     {
-        void Initialize();
+        void Init();
         void Callback<TCore>(TCore core, T current) where TCore : Core<T>;
-        void Finalize();
+        void Out();
     }
 
     public class LambdaModifier<T> : IModifier<T> where T : Cell
@@ -18,9 +18,9 @@ namespace Assets.SimpleGenerator
             _callbackLambda = callbackLambda;
         }
 
-        public void Initialize(){ }
+        public void Init(){ }
 
-        public void Finalize(){ }
+        public void Out(){ }
         public void Callback<TCore>(TCore core, T current) where TCore : Core<T>
         {
             _callbackLambda(core, current);

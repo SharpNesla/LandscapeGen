@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading;
 
-namespace Test
+namespace SimpleGenerator.Util
 {
     public class AsyncTask
     {
@@ -12,7 +12,7 @@ namespace Test
         public bool IsReady;
         public AsyncTask(Action asyncAction, Action syncAction)
         {
-            IsReady = false;
+            IsReady = true;
             AsyncAction = () =>
             {
                 asyncAction();
@@ -23,7 +23,10 @@ namespace Test
 
         public void StopTaskExecuting()
         {
-            Executor.Abort();
+            if (!IsReady)
+            {
+                Executor.Abort();
+            }
         }
 
         public void Invoke(ThreadPool pool)

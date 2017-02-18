@@ -8,5 +8,11 @@
             X = x;
             Y = y;
         }
+
+        public static Pair operator +(Pair first, Pair second)
+        {
+
+            return new Pair(first.X + second.Y, first.Y + second.X);
+        }
     }
 }

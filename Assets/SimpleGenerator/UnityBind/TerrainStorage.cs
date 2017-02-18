@@ -9,13 +9,25 @@ namespace Assets.SimpleGenerator
 
         private TerrainStorage(TerrainData data)
         {
-            Heights = data.GetHeights(0,0,data.heightmapWidth,data.heightmapHeight);
+            Heights = new float[data.heightmapWidth,data.heightmapHeight];
         }
 
         public static TerrainStorage FromTerrainData(TerrainData data)
         {
             return new TerrainStorage(data);
         }
+
+        public void ApplyCells<T>(Core<T> core,Pair size, Pair position) where T : Cell
+        {
+            var cells = core.GetRect(size, position);
+            T[] top;
+            T[] bottom;
+            cells.Foreach(coords =>
+            {
+                Heights[coords.X,coords.Y] = cells[coords.X, coords.Y].Height;
+            });
+        }
+
     }
 
     public static class TerrainStorageExtensions
@@ -23,11 +35,9 @@ namespace Assets.SimpleGenerator
         public static void FromTerrainStorage(this TerrainData data, TerrainStorage storage)
         {
             data.SetHeights(0,0,storage.Heights);
-        }
-
-        public static void ApplyCoreData<T>(this TerrainData data, T[,] coreData) where T : Cell
-        {
 
         }
+
+
     }
 }

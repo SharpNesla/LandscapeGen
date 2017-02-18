@@ -1,39 +1,39 @@
-﻿using System.Collections.Generic;
-using Test;
+﻿using System;
+using System.Collections.Generic;
+using SimpleGenerator.Util;
 using UnityEngine;
-using ThreadPool = Test.ThreadPool;
+using ThreadPool = SimpleGenerator.Util.ThreadPool;
 
 namespace Assets.SimpleGenerator
 {
     public class AsyncDispatcher : MonoBehaviour
     {
-        public static List<AsyncTask> A;
+        private static List<AsyncTask> _a;
         public static ThreadPool Pool;
         public void Start()
         {
-            A = new List<AsyncTask>();
-            Pool = new ThreadPool(4);
+            _a = new List<AsyncTask>();
+            Pool = new ThreadPool(Environment.ProcessorCount - 1);
         }
 
         public void Update()
         {
-            for (var i = 0; i < A.Count; i++)
+            for (var i = 0; i < _a.Count; i++)
             {
-                var task = A[i];
+                var task = _a[i];
                 if (task.IsReady)
                 {
                     task.SyncAction();
-                    A.Remove(task);
+                    _a.Remove(task);
                 }
             }
         }
 
         public static void Queue(AsyncTask asyncTask)
         {
-            A.Add(asyncTask);
-
+            asyncTask.IsReady = false;
+            _a.Add(asyncTask);
             asyncTask.Invoke(Pool);
-            Debug.Log(A.Count);
         }
     }
 }
