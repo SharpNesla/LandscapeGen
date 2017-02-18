@@ -11,8 +11,7 @@
 
         public static Pair operator +(Pair first, Pair second)
         {
-
-            return new Pair(first.X + second.Y, first.Y + second.X);
+            return new Pair(first.X + second.X, first.Y + second.Y);
         }
     }
 }

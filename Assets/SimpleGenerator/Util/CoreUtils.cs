@@ -4,6 +4,17 @@ namespace Assets.SimpleGenerator
 {
     public static class CoreUtils
     {
+        public static T[,] Foreach<T>(this T[,] massive, Action<Pair, T> callback)
+        {
+            for (var y = 0; y < massive.GetLength(1); y++)
+            {
+                for (var x = 0; x < massive.GetLength(0); x++)
+                {
+                    callback(new Pair(x,y), massive[y,x]);
+                }
+            }
+            return massive;
+        }
         public static T[,] Foreach<T>(this T[,] massive,Pair size, Action<Pair> callback)
         {
             for (var y = 0; y < size.Y; y++)
@@ -15,6 +26,7 @@ namespace Assets.SimpleGenerator
             }
             return massive;
         }
+
         public static T[,] Foreach<T>(this T[,] massive, Action<Pair> callback)
         {
             for (var y = 0; y < massive.GetLength(1); y++)

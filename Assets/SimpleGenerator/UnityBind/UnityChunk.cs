@@ -28,25 +28,29 @@ namespace Assets.SimpleGenerator
             {
                 _refreshTask.StopTaskExecuting();
             }
+
             _terra.terrainData = Instantiate(
                 Parent.ChunkReference.GetComponent<Terrain>().terrainData
             );
-            TerrainStorage storage = TerrainStorage.FromTerrainData(_terra.terrainData);
 
-            AsyncDispatcher.Queue(_refreshTask = new AsyncTask(() =>
+            TerrainStorage storage = TerrainStorage.FromTerrainData(_terra.terrainData);
+            DateTime chunkTime = DateTime.UtcNow;
+            _refreshTask = new AsyncTask(() =>
                 {
+                    chunkTime = DateTime.Now;
                     var coordinates = new Pair(X * Parent.Resolution, Y * Parent.Resolution);
                     var size = new Pair(Parent.Resolution, Parent.Resolution);
                     storage.ApplyCells(Parent.Core, size, coordinates);
-                },
-            () =>
-            {
-                _terra.terrainData.FromTerrainStorage(storage);
-                gameObject.transform.position = new Vector3(X * Parent.UnitySize, 0, Y * Parent.UnitySize);
-                Debug.Log(String.Format("Refreshing chunk -> x:{0}, y:{1}",X,Y));
-            }
-            ));
 
+                },
+                () =>
+                {
+                    _terra.terrainData.FromTerrainStorage(storage);
+                    gameObject.transform.position = new Vector3(X * Parent.UnitySize, 0, Y * Parent.UnitySize);
+                    Debug.LogFormat("Refreshing chunk -> x:{0}, y:{1}, <>:{2}", X, Y, DateTime.Now - chunkTime);
+                }
+            );
+            AsyncDispatcher.Queue(_refreshTask);
         }
 
 

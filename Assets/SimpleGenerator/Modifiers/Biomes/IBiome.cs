@@ -2,6 +2,6 @@
 {
     public interface IBiome<T> : IModifier<T> where T : Cell
     {
-        void Apply(TerrainStorage storage);
+        void Apply(TerrainStorage storage, CellImpl cell);
     }
 }

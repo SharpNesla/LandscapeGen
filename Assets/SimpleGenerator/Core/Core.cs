@@ -28,7 +28,8 @@ namespace Assets.SimpleGenerator
         public T[,] GetRect(Pair size, Pair coordinate)
         {
             var i = new T[size.X, size.Y];
-            return i.Foreach(size,coord => i[coord.X, coord.Y] = GetCell(coord + coordinate));
+            return i.Foreach(size,coord => i[coord.X, coord.Y] =
+                GetCell(coord + new Pair(coordinate.Y, coordinate.X)));
         }
     }
 }
