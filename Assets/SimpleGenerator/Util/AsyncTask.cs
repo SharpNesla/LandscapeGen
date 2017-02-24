@@ -3,31 +3,38 @@ using System.Threading;
 
 namespace SimpleGenerator.Util
 {
+    public enum TaskState
+    {
+        Prepared,
+        Handling,
+        Ready
+    }
+
     public class AsyncTask
     {
         public readonly Action AsyncAction;
         public readonly Action SyncAction;
         public Thread Executor;
 
-        public bool IsReady;
+        public TaskState State;
+
         public AsyncTask(Action asyncAction, Action syncAction)
         {
-            IsReady = true;
+            State = TaskState.Prepared;
             AsyncAction = () =>
             {
+                State = TaskState.Handling;
                 asyncAction();
-                IsReady = true;
+                State = TaskState.Ready;
             };
-            SyncAction = syncAction;
+            SyncAction = () =>
+            {
+                syncAction();
+                State = TaskState.Prepared;
+            };
         }
 
-        public void StopTaskExecuting()
-        {
-            if (!IsReady)
-            {
-                Executor.Abort();
-            }
-        }
+
 
         public void Invoke(ThreadPool pool)
         {

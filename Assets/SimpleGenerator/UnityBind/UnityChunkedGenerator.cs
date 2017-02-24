@@ -4,24 +4,34 @@ using UnityEngine;
 
 namespace Assets.SimpleGenerator
 {
+    [RequireComponent (typeof (Cursor))]
     public class UnityChunkedGenerator : MonoBehaviour
     {
-        public List<UnityChunk> Chunks;
+        private List<UnityChunk> _chunks;
         public GameObject ChunkReference;
+
+        public Vector2 CurrentChunkPosition;
 
         public int ViewDistance;
         public int Resolution;
-        public int UnitySize;
+
+        public Vector2 UnitySize;
 
         public Core<CellImpl> Core;
 
         private void Start()
         {
-            Chunks = CreateChunks();
 
-            Core = new Core<CellImpl>(coords=> new CellImpl(coords),
+            Core = new CoreImpl(coords =>
+                {
+                    var i = new CellImpl(coords);
+                    return i;
+                },
                 gameObject.GetComponents<IModifier<CellImpl>>());
+            _chunks = CreateChunks();
+
         }
+
 
         public void Update()
         {
@@ -31,7 +41,10 @@ namespace Assets.SimpleGenerator
             }
             if (Input.GetKeyDown(KeyCode.F))
             {
-
+                foreach (var unityChunk in _chunks)
+                {
+                    AsyncDispatcher.Abort(unityChunk._refreshTask);
+                }
             }
         }
 
@@ -44,7 +57,6 @@ namespace Assets.SimpleGenerator
                 for (var x = -ViewDistance; x <= ViewDistance; x++)
                 {
                     var chunk = Instantiate(ChunkReference).GetComponent<UnityChunk>();
-                    chunk.ChunkSize = UnitySize;
                     chunk.X = x;
                     chunk.Y = y;
                     chunk.Parent = this;
@@ -56,7 +68,7 @@ namespace Assets.SimpleGenerator
 
         public void Refresh()
         {
-            foreach (var unityChunk in Chunks)
+            foreach (var unityChunk in _chunks)
             {
                 unityChunk.Refresh();
             }

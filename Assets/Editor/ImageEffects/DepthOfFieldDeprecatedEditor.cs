@@ -89,9 +89,9 @@ namespace UnityStandardAssets.ImageEffects
                 return;
 
             if (simpleTweakMode.boolValue)
-                GUILayout.Label ("Current: "+go.GetComponent<Camera>().name+", near "+go.GetComponent<Camera>().nearClipPlane+", far: "+go.GetComponent<Camera>().farClipPlane+", focal: "+focalPoint.floatValue, EditorStyles.miniBoldLabel);
+                GUILayout.Label ("Cursor: "+go.GetComponent<Camera>().name+", near "+go.GetComponent<Camera>().nearClipPlane+", far: "+go.GetComponent<Camera>().farClipPlane+", focal: "+focalPoint.floatValue, EditorStyles.miniBoldLabel);
             else
-                GUILayout.Label ("Current: "+go.GetComponent<Camera>().name+", near "+go.GetComponent<Camera>().nearClipPlane+", far: "+go.GetComponent<Camera>().farClipPlane+", focal: "+focalZDistance.floatValue, EditorStyles.miniBoldLabel);
+                GUILayout.Label ("Cursor: "+go.GetComponent<Camera>().name+", near "+go.GetComponent<Camera>().nearClipPlane+", far: "+go.GetComponent<Camera>().farClipPlane+", focal: "+focalZDistance.floatValue, EditorStyles.miniBoldLabel);
 
             EditorGUILayout.PropertyField (resolution, new GUIContent("Resolution"));
             EditorGUILayout.PropertyField (quality, new GUIContent("Quality"));

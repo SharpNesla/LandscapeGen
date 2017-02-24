@@ -49,7 +49,7 @@ namespace UnityStandardAssets.ImageEffects
 
             EditorGUILayout.PropertyField (useDepthTexture, new GUIContent ("Rely on Z Buffer?"));
             if ((target as SunShafts).GetComponent<Camera>())
-                GUILayout.Label("Current camera mode: "+ (target as SunShafts).GetComponent<Camera>().depthTextureMode, EditorStyles.miniBoldLabel);
+                GUILayout.Label("Cursor camera mode: "+ (target as SunShafts).GetComponent<Camera>().depthTextureMode, EditorStyles.miniBoldLabel);
 
             EditorGUILayout.EndHorizontal();
 

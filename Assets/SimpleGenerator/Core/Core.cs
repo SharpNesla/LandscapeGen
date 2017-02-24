@@ -25,7 +25,7 @@ namespace Assets.SimpleGenerator
             return i;
         }
 
-        public T[,] GetRect(Pair size, Pair coordinate)
+        public virtual T[,] GetRect(Pair size, Pair coordinate)
         {
             var i = new T[size.X, size.Y];
             return i.Foreach(size,coord => i[coord.X, coord.Y] =

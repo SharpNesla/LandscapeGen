@@ -42,7 +42,7 @@ namespace SimpleGenerator.Util
                         local.AsyncAction();
                     }
                 }
-                catch (ThreadAbortException e)
+                catch (ThreadAbortException)
                 {
                     Thread.ResetAbort();
                 }

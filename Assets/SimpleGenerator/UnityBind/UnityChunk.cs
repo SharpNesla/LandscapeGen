@@ -11,30 +11,48 @@ namespace Assets.SimpleGenerator
         private Terrain _terra;
 
         public int X, Y;
-        public int ChunkSize;
-        private AsyncTask _refreshTask;
+        public AsyncTask _refreshTask;
 
         private void Start()
         {
+            var currentTerrainData = AssignTerrainData();
             _terra = gameObject.GetComponent<Terrain>();
-            _terra.terrainData.heightmapResolution = Parent.Resolution;
-            _terra.terrainData.size = new Vector3(Parent.UnitySize, 300, Parent.UnitySize);
+
+            _terra.basemapDistance = 2000;
+            _terra.terrainData = currentTerrainData;
+
+            gameObject.GetComponent<TerrainCollider>().terrainData = currentTerrainData;
+
             _refreshTask = new AsyncTask(()=> {},()=>{});
+        }
+
+        private TerrainData AssignTerrainData()
+        {
+            var prototype = Instantiate(Parent.ChunkReference.GetComponent<Terrain>().terrainData);
+            var data = new TerrainData
+            {
+                heightmapResolution = Parent.Resolution + 1,
+                alphamapResolution = Parent.Resolution,
+                baseMapResolution = Parent.Resolution,
+                splatPrototypes = prototype.splatPrototypes,
+                detailPrototypes = prototype.detailPrototypes,
+                treePrototypes = prototype.treePrototypes,
+                size = new Vector3(Parent.UnitySize.x, Parent.UnitySize.y, Parent.UnitySize.x)
+            };
+
+            data.SetDetailResolution(Parent.Resolution, 8);
+
+            return data;
         }
 
         public void Refresh()
         {
-            if (_refreshTask != null)
-            {
-                _refreshTask.StopTaskExecuting();
-            }
+            AsyncDispatcher.Abort(_refreshTask);
 
-            _terra.terrainData = Instantiate(
-                Parent.ChunkReference.GetComponent<Terrain>().terrainData
-            );
+            var storage = TerrainStorage.FromTerrainData(_terra.terrainData);
+            gameObject.transform.position = new Vector3((X + Parent.CurrentChunkPosition.x) * Parent.UnitySize.x, 0, (Y+Parent.CurrentChunkPosition.x) * Parent.UnitySize.x);
 
-            TerrainStorage storage = TerrainStorage.FromTerrainData(_terra.terrainData);
-            DateTime chunkTime = DateTime.UtcNow;
+            var chunkTime = DateTime.UtcNow;
             _refreshTask = new AsyncTask(() =>
                 {
                     chunkTime = DateTime.Now;
@@ -46,7 +64,7 @@ namespace Assets.SimpleGenerator
                 () =>
                 {
                     _terra.terrainData.FromTerrainStorage(storage);
-                    gameObject.transform.position = new Vector3(X * Parent.UnitySize, 0, Y * Parent.UnitySize);
+
                     Debug.LogFormat("Refreshing chunk -> x:{0}, y:{1}, <>:{2}", X, Y, DateTime.Now - chunkTime);
                 }
             );

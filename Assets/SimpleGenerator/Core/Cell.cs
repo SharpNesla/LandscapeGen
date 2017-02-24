@@ -10,5 +10,10 @@
             Coords = coordinates;
             Height = height;
         }
+
+        public override int GetHashCode()
+        {
+            return Coords.GetHashCode();
+        }
     }
 }
