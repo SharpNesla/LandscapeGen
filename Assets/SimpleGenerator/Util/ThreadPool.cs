@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 
 namespace SimpleGenerator.Util
@@ -34,15 +35,15 @@ namespace SimpleGenerator.Util
                         if (_tasks.Count > 0)
                         {
                             local = _tasks.Dequeue();
+                            local.Executor = Thread.CurrentThread;
                         }
                     }
                     if (local != null)
                     {
-                        local.Executor = Thread.CurrentThread;
                         local.AsyncAction();
                     }
                 }
-                catch (ThreadAbortException)
+                catch (ThreadAbortException e)
                 {
                     Thread.ResetAbort();
                 }
@@ -57,4 +58,5 @@ namespace SimpleGenerator.Util
             }
         }
     }
+
 }

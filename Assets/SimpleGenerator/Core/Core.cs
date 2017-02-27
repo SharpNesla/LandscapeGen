@@ -15,17 +15,17 @@ namespace Assets.SimpleGenerator
             _modifiers = modifiers;
         }
 
-        public virtual T GetCell(Pair coordinates)
+        public T GetCell(Pair coordinates)
         {
             var i = _cellInitializer(coordinates);
-            foreach (var modifier in _modifiers)
+            for (var index = 0; index < _modifiers.Length; index++)
             {
-                modifier.Callback(this, i);
+                _modifiers[index].Callback(i);
             }
             return i;
         }
 
-        public virtual T[,] GetRect(Pair size, Pair coordinate)
+        public T[,] GetRect(Pair size, Pair coordinate)
         {
             var i = new T[size.X, size.Y];
             return i.Foreach(size,coord => i[coord.X, coord.Y] =

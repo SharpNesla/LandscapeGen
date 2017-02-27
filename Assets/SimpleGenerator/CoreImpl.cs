@@ -6,15 +6,16 @@ namespace Assets.SimpleGenerator
 {
     public class CoreImpl : Core<CellImpl>
     {
-        public CoreImpl(Func<Pair, CellImpl> cellInitializer, params IModifier<CellImpl>[] modifiers) : base(cellInitializer, modifiers)
+        public readonly int Resolution;
+        public CoreImpl(Func<Pair, CellImpl> cellInitializer, int resolution, params IModifier<CellImpl>[] modifiers) : base(cellInitializer, modifiers)
         {
-
+            Resolution = resolution;
         }
 
-
-        public override CellImpl[,] GetRect(Pair size, Pair coordinate)
+        public CellImpl[,] GetChunk(Pair position)
         {
-            return base.GetRect(size, coordinate);
+            CellImpl[,] i = GetRect(new Pair(Resolution + 2, Resolution + 2), position + new Pair(-1,-1));
+            return i.Foreach((pair, impl) => impl.LocalCache = i);
         }
     }
 }

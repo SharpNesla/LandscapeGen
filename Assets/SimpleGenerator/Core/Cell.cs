@@ -3,17 +3,12 @@
     public abstract class Cell
     {
         public float Height;
-        public readonly Pair Coords;
+        public readonly Pair Position;
 
         protected Cell(Pair coordinates, float height = 0)
         {
-            Coords = coordinates;
+            Position = coordinates;
             Height = height;
-        }
-
-        public override int GetHashCode()
-        {
-            return Coords.GetHashCode();
         }
     }
 }

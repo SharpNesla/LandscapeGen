@@ -1,15 +1,19 @@
-﻿using System;
-using UnityEditor;
-using UnityEngine;
+﻿using UnityEngine;
 namespace Assets.SimpleGenerator.Biomes
 {
+    [RequireComponent(typeof(UnityChunkedGenerator))]
     public class Grass : MonoBehaviour, IBiome<CellImpl>
     {
         public float TopBound, LowBound;
         public int GrassCount;
-        public void Callback<TCore>(TCore core, CellImpl current) where TCore : Core<CellImpl>
+
+        public void Start()
         {
-            if (current.Height < TopBound || current.Height < LowBound)
+        }
+
+        public void Callback(CellImpl current)
+        {
+            if (current.Height < TopBound && current.Height > LowBound)
             {
                 current.Biomes.Add(this);
             }
@@ -21,5 +25,6 @@ namespace Assets.SimpleGenerator.Biomes
             storage.SplatMap[current.LocalPosition.X, current.LocalPosition.Y, 2] = 3f;
             storage.DetailLayer[current.LocalPosition.X, current.LocalPosition.Y] = GrassCount;
         }
+
     }
 }

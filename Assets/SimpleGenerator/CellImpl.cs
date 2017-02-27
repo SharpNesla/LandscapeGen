@@ -7,6 +7,8 @@ namespace Assets.SimpleGenerator
     {
         public List<IBiome<CellImpl>> Biomes;
         public Pair LocalPosition;
+        public CoreImpl Core;
+        public CellImpl[,] LocalCache;
         public CellImpl(Pair coordinates, float height = 0) : base(coordinates, height)
         {
             Biomes = new List<IBiome<CellImpl>>();

@@ -14,11 +14,12 @@ namespace Assets.SimpleGenerator
         public float[,,] SplatMap;
         public int[,] DetailLayer;
         public List<TreeInstance> Instances;
+
         private TerrainStorage(TerrainData data)
         {
-            Heights = new float[data.heightmapWidth,data.heightmapHeight];
+            Heights = new float[data.heightmapWidth, data.heightmapHeight];
             SplatMap = new float
-               [data.alphamapWidth,
+            [data.alphamapWidth,
                 data.alphamapWidth,
                 data.splatPrototypes.Length];
             DetailLayer = new int[data.detailHeight, data.detailWidth];
@@ -30,43 +31,45 @@ namespace Assets.SimpleGenerator
             return new TerrainStorage(data);
         }
 
-        public void ApplyCells(Core<CellImpl> core,Pair size, Pair position)
+        public void ApplyCells(CoreImpl core, Pair size, Pair position)
         {
-            var cells = core.GetRect(size, position);
-            var top = core.GetRect(new Pair(size.X, 1), new Pair(size.X, 0) + position);
-            var bottom = core.GetRect(new Pair(1, size.X), new Pair(0, size.Y) + position);
+            var cells = core.GetChunk(position).Foreach((pair, impl) => impl.LocalPosition = pair + new Pair(-1,-1));
 
-            for (int x = 0; x < size.X; x++)
+            for (var y = 0; y < size.X; y++)
             {
-                Heights[x, size.Y] = top[x, 0].Height;
-            }
-
-            for (int y = 0; y < size.X; y++)
-            {
-                Heights[size.X, y] = bottom[0, y].Height;
-            }
-            cells.Foreach((coords, cell) =>
-            {
-                Heights[coords.X,coords.Y] = cells[coords.X, coords.Y].Height;
-                cell.LocalPosition = coords;
-                for (var index = 0; index < cell.Biomes.Count; index++)
+                for (var x = 0; x < size.X; x++)
                 {
-                    var biome = cell.Biomes[index];
-                    biome.Apply(cell, this);
+                    var cell = cells[x + 1, y + 1];
+                    Heights[x,y] = cells[x, y].Height;
+                    cell.LocalPosition = new Pair(x,y);
+                    for (var index = 0; index < cell.Biomes.Count; index++)
+                    {
+                        var biome = cell.Biomes[index];
+                        biome.Apply(cell, this);
+                    }
                 }
-            });
+            }
+
+            for (var x = 0; x <= size.X; x++)
+            {
+                Heights[x, size.Y] = cells[x, size.Y].Height;
+            }
+
+            for (var y = 0; y < size.X; y++)
+            {
+                Heights[size.X, y] = cells[size.X, y].Height;
+            }
         }
     }
 
     public static class TerrainStorageExtensions
     {
-        public static void FromTerrainStorage(this TerrainData data, TerrainStorage storage)
+        public static void ApplyTerrainStorage(this TerrainData data, TerrainStorage storage)
         {
-            data.SetHeights(0,0,storage.Heights);
-            data.SetAlphamaps(0,0, storage.SplatMap);
-            data.SetDetailLayer(0,0,0,storage.DetailLayer);
+            data.SetHeights(0, 0, storage.Heights);
+            data.SetAlphamaps(0, 0, storage.SplatMap);
+            data.SetDetailLayer(0, 0, 0, storage.DetailLayer);
             data.treeInstances = storage.Instances.ToArray();
-
         }
     }
 }

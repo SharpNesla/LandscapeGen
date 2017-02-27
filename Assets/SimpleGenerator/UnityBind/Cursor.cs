@@ -17,8 +17,14 @@ namespace Assets.SimpleGenerator
         private void Update()
         {
             var currentPosition = _vector3.position / Generator.UnitySize.x;
-            Generator.CurrentChunkPosition = new Vector2((float)Math.Floor(currentPosition.x),
-                (float)Math.Floor(currentPosition.z));
+            var currentNormalizedPosition = new Vector2((float) Math.Floor(currentPosition.x),
+                (float) Math.Floor(currentPosition.z));
+            if (Generator.CurrentChunkPosition != currentNormalizedPosition)
+            {
+                Generator.Refresh();
+            }
+            Generator.CurrentChunkPosition = currentNormalizedPosition;
+
         }
     }
 }

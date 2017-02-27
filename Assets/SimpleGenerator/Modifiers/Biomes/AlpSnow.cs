@@ -1,6 +1,9 @@
-﻿namespace Assets.SimpleGenerator.Biomes
+﻿using UnityEngine;
+
+namespace Assets.SimpleGenerator.Biomes
 {
-    public class Snow
+    [RequireComponent(typeof(UnityChunkedGenerator))]
+    public class Snow : MonoBehaviour
     {
 
     }

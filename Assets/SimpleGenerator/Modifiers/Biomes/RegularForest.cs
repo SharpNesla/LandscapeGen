@@ -1,25 +1,34 @@
-﻿using UnityEngine;
+﻿using System.Linq;
+using System.Security.Cryptography.X509Certificates;
+using LibNoise.Generator;
+using UnityEngine;
 
 namespace Assets.SimpleGenerator.Biomes
 {
+    [RequireComponent(typeof(UnityChunkedGenerator))]
     public class RegularForest : MonoBehaviour, IBiome<CellImpl>
     {
-        public float TopBound, LowBound;
+        private float _topBound, _lowBound;
         [Range(25,10000)]
         public int TreeChance;
 
-        private System.Random _randomizer;
-
         public int MinTreeHeight, MaxTreeHeight;
-
-        private void Start()
+        public float ForestModulatorFrequency;
+        private Perlin _hillModulator;
+        public void Start()
         {
-            _randomizer = new System.Random();
+            var grassBiome = gameObject.GetComponent<Grass>();
+            _hillModulator = new Perlin{OctaveCount = 1, Frequency = ForestModulatorFrequency, Seed = 34};
+            _topBound = grassBiome.TopBound;
+            _lowBound = grassBiome.LowBound;
         }
 
-        public void Callback<TCore>(TCore core, CellImpl current) where TCore : Core<CellImpl>
+        public void Callback(CellImpl current)
         {
-            if (_randomizer.Next(0, TreeChance) == 0)
+            var value = current.Position.RandomFromPosition(0, TreeChance, 54);
+            if (current.Height < _topBound && current.Height > _lowBound
+                &&value == 0 &&
+                _hillModulator.GetValue(current.Position.X, 0, current.Position.Y) > 0.07)
             {
                 current.Biomes.Add(this);
             }
@@ -27,16 +36,16 @@ namespace Assets.SimpleGenerator.Biomes
 
         public void Apply(CellImpl current, TerrainStorage storage)
         {
-            var resolution = storage.Heights.GetLength(0);
-            storage.Instances.Add(MakeTree(current, resolution));
+            storage.Instances.Add(MakeTree(current, current.Core.Resolution));
         }
+
         TreeInstance MakeTree(CellImpl current, int localScale)
         {
             TreeInstance instance = new TreeInstance
             {
                 prototypeIndex = 0,
-                rotation = _randomizer.Next(0, 359),
-                heightScale = (float) _randomizer.Next(MinTreeHeight,MaxTreeHeight) / 10,
+                rotation = current.Position.RandomFromPosition(0, 359,54),
+                heightScale = (float) current.Position.RandomFromPosition(MinTreeHeight,MaxTreeHeight,54) / 10,
                 position = new Vector3 ((float) current.LocalPosition.Y / localScale, current.Height,
                     (float) current.LocalPosition.X / localScale)
             };

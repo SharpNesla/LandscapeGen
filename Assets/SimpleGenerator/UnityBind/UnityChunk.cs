@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Runtime.InteropServices;
 using SimpleGenerator.Util;
 using UnityEngine;
 
@@ -7,18 +6,22 @@ namespace Assets.SimpleGenerator
 {
     public class UnityChunk : MonoBehaviour
     {
-        public UnityChunkedGenerator Parent;
         private Terrain _terra;
+        public UnityChunkedGenerator Parent;
 
-        public int X, Y;
+        public Pair Position;
         public AsyncTask _refreshTask;
 
         private void Start()
         {
-            var currentTerrainData = AssignTerrainData();
+            var exampleTerrainData = Parent.ChunkReference.GetComponent<Terrain>();
+            var currentTerrainData = AssignTerrainData(Instantiate(exampleTerrainData.terrainData));
+
             _terra = gameObject.GetComponent<Terrain>();
 
-            _terra.basemapDistance = 2000;
+            _terra.basemapDistance = exampleTerrainData.basemapDistance;
+            _terra.detailObjectDistance = exampleTerrainData.detailObjectDistance;
+            _terra.treeBillboardDistance = exampleTerrainData.treeDistance;
             _terra.terrainData = currentTerrainData;
 
             gameObject.GetComponent<TerrainCollider>().terrainData = currentTerrainData;
@@ -26,9 +29,8 @@ namespace Assets.SimpleGenerator
             _refreshTask = new AsyncTask(()=> {},()=>{});
         }
 
-        private TerrainData AssignTerrainData()
+        private TerrainData AssignTerrainData(TerrainData prototype)
         {
-            var prototype = Instantiate(Parent.ChunkReference.GetComponent<Terrain>().terrainData);
             var data = new TerrainData
             {
                 heightmapResolution = Parent.Resolution + 1,
@@ -37,7 +39,8 @@ namespace Assets.SimpleGenerator
                 splatPrototypes = prototype.splatPrototypes,
                 detailPrototypes = prototype.detailPrototypes,
                 treePrototypes = prototype.treePrototypes,
-                size = new Vector3(Parent.UnitySize.x, Parent.UnitySize.y, Parent.UnitySize.x)
+                size = new Vector3(Parent.UnitySize.x, Parent.UnitySize.y, Parent.UnitySize.x),
+                wavingGrassTint = prototype.wavingGrassTint,
             };
 
             data.SetDetailResolution(Parent.Resolution, 8);
@@ -47,30 +50,27 @@ namespace Assets.SimpleGenerator
 
         public void Refresh()
         {
-            AsyncDispatcher.Abort(_refreshTask);
-
             var storage = TerrainStorage.FromTerrainData(_terra.terrainData);
-            gameObject.transform.position = new Vector3((X + Parent.CurrentChunkPosition.x) * Parent.UnitySize.x, 0, (Y+Parent.CurrentChunkPosition.x) * Parent.UnitySize.x);
 
             var chunkTime = DateTime.UtcNow;
             _refreshTask = new AsyncTask(() =>
                 {
                     chunkTime = DateTime.Now;
-                    var coordinates = new Pair(X * Parent.Resolution, Y * Parent.Resolution);
+                    var coordinates = new Pair((int) (Position.X +  Parent.CurrentChunkPosition.x) * Parent.Resolution, (int) (Position.Y  +  Parent.CurrentChunkPosition.y)* Parent.Resolution);
                     var size = new Pair(Parent.Resolution, Parent.Resolution);
                     storage.ApplyCells(Parent.Core, size, coordinates);
 
                 },
                 () =>
                 {
-                    _terra.terrainData.FromTerrainStorage(storage);
+                    _terra.terrainData.ApplyTerrainStorage(storage);
 
-                    Debug.LogFormat("Refreshing chunk -> x:{0}, y:{1}, <>:{2}", X, Y, DateTime.Now - chunkTime);
+                    gameObject.transform.position = new Vector3((Position.X + Parent.CurrentChunkPosition.x) * Parent.UnitySize.x, 0,
+                        (Position.Y + Parent.CurrentChunkPosition.y) * Parent.UnitySize.x);
+                    Debug.LogFormat("Refreshing chunk -> x:{0}, y:{1}, <>:{2}", Position.X, Position.Y, DateTime.Now - chunkTime);
                 }
             );
             AsyncDispatcher.Queue(_refreshTask);
         }
-
-
     }
 }

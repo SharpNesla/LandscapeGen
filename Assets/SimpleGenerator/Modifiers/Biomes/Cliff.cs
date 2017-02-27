@@ -2,10 +2,15 @@
 
 namespace Assets.SimpleGenerator.Biomes
 {
+    [RequireComponent(typeof(UnityChunkedGenerator))]
     public class Cliff : MonoBehaviour, IBiome<CellImpl>
     {
 
-        public void Callback<TCore>(TCore core, CellImpl current) where TCore : Core<CellImpl>
+        public void Start()
+        {
+
+        }
+        public void Callback(CellImpl current)
         {
             current.Biomes.Add(this);
         }

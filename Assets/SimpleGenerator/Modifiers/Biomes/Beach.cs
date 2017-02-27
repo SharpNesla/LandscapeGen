@@ -1,7 +1,28 @@
-﻿namespace Assets.SimpleGenerator.Biomes
+﻿using Assets.SimpleGenerator;
+using UnityEngine;
+
+namespace SimpleGenerator.Modifiers.Biomes
 {
-    public class Beach
+    [RequireComponent(typeof(UnityChunkedGenerator))]
+    public class Beach : MonoBehaviour, IBiome<CellImpl>
     {
+
+        public void Start()
+        {
+
+        }
+        public void Callback(CellImpl current)
+        {
+            current.Biomes.Add(this);
+        }
+
+        public void Apply(CellImpl current, TerrainStorage storage)
+        {
+            storage.SplatMap[current.LocalPosition.X, current.LocalPosition.Y, 0] = 0f;
+            storage.SplatMap[current.LocalPosition.X, current.LocalPosition.Y, 1] = 0f;
+            storage.SplatMap[current.LocalPosition.X, current.LocalPosition.Y, 2] = 1f;
+            storage.SplatMap[current.LocalPosition.X, current.LocalPosition.Y, 3] = 0f;
+        }
 
     }
 }

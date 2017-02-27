@@ -1,4 +1,6 @@
-﻿using LibNoise.Generator;
+﻿using System;
+using System.Threading;
+using LibNoise.Generator;
 using UnityEngine;
 
 namespace Assets.SimpleGenerator
@@ -10,18 +12,23 @@ namespace Assets.SimpleGenerator
         private Billow _noiseGenerator;
         private Perlin _hillModulator, _continentModulator;
         public float HillModulatorFrequency;
-        public int modul;
+
+        public float maximumHeight;
+
         public void Start()
         {
             _noiseGenerator = new Billow{Frequency = Frequency,OctaveCount = Octaves, Seed = 34};
             _hillModulator = new Perlin{Frequency = HillModulatorFrequency, OctaveCount = 1};
         }
 
-        public void Callback<TCore>(TCore core, CellImpl current) where TCore : Core<CellImpl>
+        public void Callback(CellImpl current)
         {
-            var x = current.Coords.X;
-            var y = current.Coords.Y;
-            current.Height = (float) (_noiseGenerator.GetValue(x,0,y) / 3 + 0.6f * _hillModulator.GetValue(x,0,y));
+            var x = current.Position.X;
+            var y = current.Position.Y;
+            current.Height = (float) _noiseGenerator.GetValue(x,0,y) /1.4f + 0.28f;
+            Monitor.Enter(maximumHeight);
+            maximumHeight = Mathf.Max(maximumHeight, current.Height);
+            Monitor.Exit(maximumHeight);
             current.Height = current.Height * current.Height;
         }
     }

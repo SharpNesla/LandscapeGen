@@ -1,5 +1,9 @@
-﻿namespace Assets.SimpleGenerator
+﻿using System;
+using System.Runtime.Serialization;
+
+namespace Assets.SimpleGenerator
 {
+    [Serializable]
     public struct Pair
     {
         public int X, Y;
@@ -12,6 +16,16 @@
         public static Pair operator +(Pair first, Pair second)
         {
             return new Pair(first.X + second.X, first.Y + second.Y);
+        }
+
+        public static bool operator !=(Pair first, Pair second)
+        {
+            return !(first == second);
+        }
+
+        public static bool operator ==(Pair first, Pair second)
+        {
+            return first.X == second.X && first.Y == second.Y;
         }
     }
 }
