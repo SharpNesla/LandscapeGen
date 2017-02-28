@@ -1,22 +1,26 @@
-﻿using UnityEngine;
-namespace Assets.SimpleGenerator.Biomes
+﻿using Assets.SimpleGenerator;
+using UnityEngine;
+using UnityEngine.Assertions.Comparers;
+
+namespace SimpleGenerator.Modifiers.Biomes
 {
     [RequireComponent(typeof(UnityChunkedGenerator))]
     public class Grass : MonoBehaviour, IBiome<CellImpl>
     {
         public float TopBound, LowBound;
         public int GrassCount;
-
+        public float MaxCellElevation;
         public void Start()
         {
         }
 
         public void Callback(CellImpl current)
         {
-            if (current.Height < TopBound && current.Height > LowBound)
+            if (current.Height < TopBound && current.Height > LowBound /*&&current.Elevation < MaxCellElevation*/)
             {
                 current.Biomes.Add(this);
             }
+
         }
 
         public void Apply(CellImpl current, TerrainStorage storage)

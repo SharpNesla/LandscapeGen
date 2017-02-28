@@ -1,6 +1,7 @@
-﻿using UnityEngine;
+﻿using Assets.SimpleGenerator;
+using UnityEngine;
 
-namespace Assets.SimpleGenerator.Biomes
+namespace SimpleGenerator.Modifiers.Biomes
 {
     [RequireComponent(typeof(UnityChunkedGenerator))]
     public class Cliff : MonoBehaviour, IBiome<CellImpl>

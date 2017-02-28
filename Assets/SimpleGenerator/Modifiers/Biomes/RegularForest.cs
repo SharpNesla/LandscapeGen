@@ -1,9 +1,9 @@
-﻿using System.Linq;
-using System.Security.Cryptography.X509Certificates;
+﻿using Assets.SimpleGenerator;
+using Assets.SimpleGenerator.Biomes;
 using LibNoise.Generator;
 using UnityEngine;
 
-namespace Assets.SimpleGenerator.Biomes
+namespace SimpleGenerator.Modifiers.Biomes
 {
     [RequireComponent(typeof(UnityChunkedGenerator))]
     public class RegularForest : MonoBehaviour, IBiome<CellImpl>
@@ -39,9 +39,9 @@ namespace Assets.SimpleGenerator.Biomes
             storage.Instances.Add(MakeTree(current, current.Core.Resolution));
         }
 
-        TreeInstance MakeTree(CellImpl current, int localScale)
+        private TreeInstance MakeTree(CellImpl current, int localScale)
         {
-            TreeInstance instance = new TreeInstance
+            var instance = new TreeInstance
             {
                 prototypeIndex = 0,
                 rotation = current.Position.RandomFromPosition(0, 359,54),

@@ -14,7 +14,7 @@ namespace Assets.SimpleGenerator
         public float HillModulatorFrequency;
 
         public float maximumHeight;
-
+        public float minimumHeight;
         public void Start()
         {
             _noiseGenerator = new Billow{Frequency = Frequency,OctaveCount = Octaves, Seed = 34};
@@ -28,6 +28,7 @@ namespace Assets.SimpleGenerator
             current.Height = (float) _noiseGenerator.GetValue(x,0,y) /1.4f + 0.28f;
             Monitor.Enter(maximumHeight);
             maximumHeight = Mathf.Max(maximumHeight, current.Height);
+            minimumHeight = Mathf.Min(minimumHeight, current.Height);
             Monitor.Exit(maximumHeight);
             current.Height = current.Height * current.Height;
         }

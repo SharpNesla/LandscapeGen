@@ -33,7 +33,7 @@ namespace Assets.SimpleGenerator
 
         public void ApplyCells(CoreImpl core, Pair size, Pair position)
         {
-            var cells = core.GetChunk(position).Foreach((pair, impl) => impl.LocalPosition = pair + new Pair(-1,-1));
+            var cells = core.GetChunk(position);
 
             for (var y = 0; y < size.X; y++)
             {

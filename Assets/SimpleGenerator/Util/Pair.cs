@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Runtime.Serialization;
+using UnityEngine;
 
 namespace Assets.SimpleGenerator
 {
@@ -11,6 +12,11 @@ namespace Assets.SimpleGenerator
         {
             X = x;
             Y = y;
+        }
+
+        public static implicit operator Pair(Vector2 vector)
+        {
+            return new Pair((int)vector.x,(int) vector.y);
         }
 
         public static Pair operator +(Pair first, Pair second)

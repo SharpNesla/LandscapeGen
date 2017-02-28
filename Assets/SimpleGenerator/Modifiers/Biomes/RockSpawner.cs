@@ -18,11 +18,7 @@ namespace SimpleGenerator.Modifiers.Biomes
 
         public void Callback(CellImpl current)
         {
-            int value;
-            lock (_randomizer)
-            {
-                value = _randomizer.Next(0, RockChance);
-            }
+            var value = current.Position.RandomFromPosition(0, RockChance, 54);
             if (value == 0)
             {
                 current.Biomes.Add(this);
@@ -31,18 +27,17 @@ namespace SimpleGenerator.Modifiers.Biomes
 
         public void Apply(CellImpl current, TerrainStorage storage)
         {
-            var resolution = storage.Heights.GetLength(0);
-            storage.Instances.Add(MakeTree(current, resolution));
+            storage.Instances.Add(MakeTree(current, current.Core.Resolution));
         }
 
-        private TreeInstance MakeTree(CellImpl current, int localScale)
+        TreeInstance MakeTree(CellImpl current, int localScale)
         {
             TreeInstance instance = new TreeInstance
             {
-                prototypeIndex = _randomizer.Next(1,4),
-                rotation = _randomizer.Next(0, 359),
-                heightScale = (float) _randomizer.Next(MinTreeHeight, MaxTreeHeight) / 10,
-                position = new Vector3((float) current.LocalPosition.Y / localScale, current.Height,
+                prototypeIndex = 0,
+                rotation = current.Position.RandomFromPosition(0, 359,54),
+                heightScale = (float) current.Position.RandomFromPosition(MinTreeHeight,MaxTreeHeight,54) / 10,
+                position = new Vector3 ((float) current.LocalPosition.Y / localScale, current.Height,
                     (float) current.LocalPosition.X / localScale)
             };
             instance.widthScale = instance.heightScale;

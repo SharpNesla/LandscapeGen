@@ -12,10 +12,22 @@ namespace Assets.SimpleGenerator
             Resolution = resolution;
         }
 
+        public override CellImpl[,] GetRect(Pair size, Pair coordinate)
+        {
+            var i = new CellImpl[size.X, size.Y];
+            return i.Foreach(size,coord => i[coord.X, coord.Y] =
+                CellInitializer(coord + new Pair(coordinate.Y, coordinate.X)));
+        }
+
         public CellImpl[,] GetChunk(Pair position)
         {
-            CellImpl[,] i = GetRect(new Pair(Resolution + 2, Resolution + 2), position + new Pair(-1,-1));
-            return i.Foreach((pair, impl) => impl.LocalCache = i);
+            var i = GetRect(new Pair(Resolution + 2, Resolution + 2), position + new Pair(-1,-1));
+            return i.Foreach((pair, impl) =>
+                {
+                    impl.LocalCache = i;
+                    impl.LocalPosition = pair + new Pair(-1, -1);
+                })
+                .Foreach((pair, impl) => ApplyModifiers(impl));
         }
     }
 }
