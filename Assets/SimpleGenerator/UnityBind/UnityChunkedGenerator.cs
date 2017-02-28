@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEditor.VersionControl;
 using UnityEngine;
+using UnityEngine.Networking;
 
 namespace Assets.SimpleGenerator
 {
@@ -19,7 +21,8 @@ namespace Assets.SimpleGenerator
         public Vector2 UnitySize;
 
         public CoreImpl Core;
-
+        public List<UnityChunk> _refreshingChunks;
+        private List<Pair> _refreshingPositions;
         private void Start()
         {
             Core = new CoreImpl(coords =>
@@ -29,6 +32,8 @@ namespace Assets.SimpleGenerator
                 },Resolution,
                 Array.FindAll(gameObject.GetComponents<IModifier<CellImpl>>(), modifier => ((MonoBehaviour) modifier).enabled));
             _chunks = CreateChunks();
+            _refreshingChunks = new List<UnityChunk>();
+            _refreshingPositions = new List<Pair>();
         }
 
         public void Update()
@@ -39,10 +44,13 @@ namespace Assets.SimpleGenerator
             }
             if (Input.GetKeyDown(KeyCode.F))
             {
-                foreach (var unityChunk in _chunks)
+                CoreUtils.Foreach(new Pair(ViewDistance * 2 + 1,ViewDistance * 2 + 1), position =>
                 {
-                    AsyncDispatcher.Abort(unityChunk._refreshTask);
-                }
+                    var current = _chunks[position.Y * (ViewDistance * 2 + 1) + position.X];
+                    current.Position = position + new Pair(-ViewDistance, -ViewDistance) + CurrentChunkPosition;
+                    current.Refresh();
+                });
+                var b = 0;
             }
         }
 
@@ -65,33 +73,29 @@ namespace Assets.SimpleGenerator
 
         public void Refresh()
         {
-            //var i = new List<Pair>();
-            //var cellCache = new List<UnityChunk>(_chunks);
-            //for (var y = -ViewDistance + CurrentChunkPosition.y; y <= ViewDistance + CurrentChunkPosition.y; y++)
-            //{
-            //    for (var x = -ViewDistance + CurrentChunkPosition.x; x <= ViewDistance + CurrentChunkPosition.y; x++)
-            //    {
-            //        var position = new Pair((int) x, (int) y);
-            //        var matchingCell = cellCache.Find(chunk => chunk.Position == position);
-            //        if (matchingCell == null)
-            //        {
-            //            i.Add(position);
-            //        }
-            //        else
-            //        {
-            //            cellCache.Remove(matchingCell);
-            //        }
-            //    }
-            //}
-            //for (int j = 0; j < i.Capacity; j++)
-            //{
-            //    cellCache[j].Position = i[j];
-            //    cellCache[j].Refresh();
-            //}
-            foreach (var unityChunk in _chunks)
+
+            _refreshingChunks.AddRange(_chunks);
+            var positions = new List<Pair>();
+            CoreUtils.Foreach(new Pair(ViewDistance * 2 + 1,ViewDistance * 2 + 1), localPosition =>
             {
-                unityChunk.Refresh();
+                var position = localPosition + new Pair(-ViewDistance, -ViewDistance) + CurrentChunkPosition;
+                var current = _refreshingChunks.Find(x => x.Position == position);
+                if (current != null)
+                {
+                    _refreshingChunks.Remove(current);
+                }
+                else
+                {
+                    positions.Add(position);
+                }
+            });
+            for (int i = 0; i < positions.Count; i++)
+            {
+                _refreshingChunks[i].Position = positions[i];
+                _refreshingChunks[i].Refresh();
             }
+            _refreshingChunks.Clear();
+            _refreshingPositions.Clear();
         }
 
     }

@@ -21,6 +21,7 @@ namespace Assets.SimpleGenerator
                 (float) Math.Floor(currentPosition.z));
             if (Generator.CurrentChunkPosition != currentNormalizedPosition)
             {
+                Generator.CurrentChunkPosition = currentNormalizedPosition;
                 Generator.Refresh();
             }
             Generator.CurrentChunkPosition = currentNormalizedPosition;

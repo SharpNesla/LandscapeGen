@@ -27,6 +27,16 @@ namespace Assets.SimpleGenerator
             }
             return massive;
         }
+        public static void Foreach(Pair size, Action<Pair> callback)
+        {
+            for (var y = 0; y < size.Y; y++)
+            {
+                for (var x = 0; x < size.X; x++)
+                {
+                    callback(new Pair(x,y));
+                }
+            }
+        }
 
         public static T[,] Foreach<T>(this T[,] massive, Action<Pair> callback)
         {

@@ -40,7 +40,7 @@ namespace Assets.SimpleGenerator
                 detailPrototypes = prototype.detailPrototypes,
                 treePrototypes = prototype.treePrototypes,
                 size = new Vector3(Parent.UnitySize.x, Parent.UnitySize.y, Parent.UnitySize.x),
-                wavingGrassTint = prototype.wavingGrassTint,
+                wavingGrassTint = prototype.wavingGrassTint
             };
 
             data.SetDetailResolution(Parent.Resolution, 8);
@@ -56,7 +56,7 @@ namespace Assets.SimpleGenerator
             _refreshTask = new AsyncTask(() =>
                 {
                     chunkTime = DateTime.Now;
-                    var coordinates = new Pair((int) (Position.X +  Parent.CurrentChunkPosition.x) * Parent.Resolution, (int) (Position.Y  +  Parent.CurrentChunkPosition.y)* Parent.Resolution);
+                    var coordinates = new Pair(Position.X * Parent.Resolution, Position.Y * Parent.Resolution);
                     var size = new Pair(Parent.Resolution, Parent.Resolution);
                     storage.ApplyCells(Parent.Core, size, coordinates);
 
@@ -65,8 +65,8 @@ namespace Assets.SimpleGenerator
                 {
                     _terra.terrainData.ApplyTerrainStorage(storage);
 
-                    gameObject.transform.position = new Vector3((Position.X + Parent.CurrentChunkPosition.x) * Parent.UnitySize.x, 0,
-                        (Position.Y + Parent.CurrentChunkPosition.y) * Parent.UnitySize.x);
+                    gameObject.transform.position = new Vector3(Position.X * Parent.UnitySize.x, 0,
+                        Position.Y * Parent.UnitySize.x);
                     Debug.LogFormat("Refreshing chunk -> x:{0}, y:{1}, <>:{2}", Position.X, Position.Y, DateTime.Now - chunkTime);
                 }
             );
