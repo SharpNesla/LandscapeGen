@@ -1,4 +1,6 @@
-﻿using Assets.SimpleGenerator;
+﻿using System.Linq;
+using System.Security.Cryptography.X509Certificates;
+using Assets.SimpleGenerator;
 using Assets.SimpleGenerator.Biomes;
 using LibNoise.Generator;
 using UnityEngine;
@@ -28,7 +30,8 @@ namespace SimpleGenerator.Modifiers.Biomes
             var value = current.Position.RandomFromPosition(0, TreeChance, 54);
             if (current.Height < _topBound && current.Height > _lowBound
                 &&value == 0 &&
-                _hillModulator.GetValue(current.Position.X, 0, current.Position.Y) > 0.07)
+                _hillModulator.GetValue(current.Position.X, 0, current.Position.Y) > 0.07
+                && current.Biomes.Any(x=>x.GetType() == typeof(Grass)))
             {
                 current.Biomes.Add(this);
             }

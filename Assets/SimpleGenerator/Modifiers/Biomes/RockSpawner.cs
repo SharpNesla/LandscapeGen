@@ -8,12 +8,10 @@ namespace SimpleGenerator.Modifiers.Biomes
     {
         [Range(25, 10000)] public int RockChance;
 
-        private System.Random _randomizer;
 
         public int MinTreeHeight, MaxTreeHeight;
         public void Start()
         {
-            _randomizer = new System.Random(32);
         }
 
         public void Callback(CellImpl current)
@@ -34,7 +32,7 @@ namespace SimpleGenerator.Modifiers.Biomes
         {
             TreeInstance instance = new TreeInstance
             {
-                prototypeIndex = 0,
+                prototypeIndex = 1,
                 rotation = current.Position.RandomFromPosition(0, 359,54),
                 heightScale = (float) current.Position.RandomFromPosition(MinTreeHeight,MaxTreeHeight,54) / 10,
                 position = new Vector3 ((float) current.LocalPosition.Y / localScale, current.Height,

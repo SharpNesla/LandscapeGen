@@ -16,11 +16,10 @@ namespace SimpleGenerator.Modifiers.Biomes
 
         public void Callback(CellImpl current)
         {
-            if (current.Height < TopBound && current.Height > LowBound /*&&current.Elevation < MaxCellElevation*/)
+            if (current.Height < TopBound && current.Height > LowBound &&current.Elevation < MaxCellElevation)
             {
                 current.Biomes.Add(this);
             }
-
         }
 
         public void Apply(CellImpl current, TerrainStorage storage)

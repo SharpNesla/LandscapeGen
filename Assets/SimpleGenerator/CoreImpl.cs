@@ -22,12 +22,17 @@ namespace Assets.SimpleGenerator
         public CellImpl[,] GetChunk(Pair position)
         {
             var i = GetRect(new Pair(Resolution + 2, Resolution + 2), position + new Pair(-1,-1));
-            return i.Foreach((pair, impl) =>
-                {
-                    impl.LocalCache = i;
-                    impl.LocalPosition = pair + new Pair(-1, -1);
-                })
-                .Foreach((pair, impl) => ApplyModifiers(impl));
+            i.Foreach((pair, impl) =>
+            {
+                impl.LocalCache = i;
+                impl.LocalPosition = pair + new Pair(-1, -1);
+            });
+            for (var j = 0; j < Modifiers.Length; j++)
+            {
+                var modifier = Modifiers[j];
+                i.Foreach((pair, impl) => { modifier.Callback(impl); });
+            }
+            return i;
         }
     }
 }
