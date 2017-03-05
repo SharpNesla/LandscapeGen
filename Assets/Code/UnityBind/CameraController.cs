@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.EventSystems;
 
-class CameraController : MonoBehaviour
+public class CameraController : MonoBehaviour
 {
     private Transform _cachedTransform;
     public float Coeff, Speed;

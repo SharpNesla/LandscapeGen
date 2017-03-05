@@ -1,4 +1,5 @@
 ﻿using Assets.SimpleGenerator;
+using Code.Modifiers.Biomes;
 using UnityEngine;
 
 namespace SimpleGenerator.Modifiers.Biomes

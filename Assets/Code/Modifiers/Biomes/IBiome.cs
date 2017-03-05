@@ -1,6 +1,7 @@
 ﻿using Assets.SimpleGenerator;
+using Code.Core;
 
-namespace SimpleGenerator.Modifiers.Biomes
+namespace Code.Modifiers.Biomes
 {
 
     public interface IBiome<T> : IModifier<T> where T : Cell

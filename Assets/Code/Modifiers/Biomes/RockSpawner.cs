@@ -1,7 +1,7 @@
 ﻿using Assets.SimpleGenerator;
 using UnityEngine;
 
-namespace SimpleGenerator.Modifiers.Biomes
+namespace Code.Modifiers.Biomes
 {
     [RequireComponent(typeof(UnityChunkedGenerator))]
     public class RockSpawner : MonoBehaviour, IBiome<CellImpl>

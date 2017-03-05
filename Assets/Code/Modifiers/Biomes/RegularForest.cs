@@ -1,11 +1,9 @@
 ﻿using System.Linq;
-using System.Security.Cryptography.X509Certificates;
 using Assets.SimpleGenerator;
-using Assets.SimpleGenerator.Biomes;
 using LibNoise.Generator;
 using UnityEngine;
 
-namespace SimpleGenerator.Modifiers.Biomes
+namespace Code.Modifiers.Biomes
 {
     [RequireComponent(typeof(UnityChunkedGenerator))]
     public class RegularForest : MonoBehaviour, IBiome<CellImpl>

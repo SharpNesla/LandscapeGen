@@ -40,7 +40,7 @@ namespace SimpleGenerator.Util
                     }
                     if (local != null)
                     {
-                        local.AsyncAction();
+                        local.AsyncAction(null);
                     }
                 }
                 catch (ThreadAbortException e)

@@ -12,7 +12,7 @@ namespace SimpleGenerator.Util
 
     public class AsyncTask
     {
-        public readonly Action AsyncAction;
+        public readonly WaitCallback AsyncAction;
         public readonly Action SyncAction;
         public Thread Executor;
 
@@ -21,7 +21,7 @@ namespace SimpleGenerator.Util
         public AsyncTask(Action asyncAction, Action syncAction)
         {
             State = TaskState.Prepared;
-            AsyncAction = () =>
+            AsyncAction = x =>
             {
                 State = TaskState.Handling;
                 asyncAction();
@@ -34,11 +34,5 @@ namespace SimpleGenerator.Util
             };
         }
 
-
-
-        public void Invoke(ThreadPool pool)
-        {
-            pool.QueueTask(this);
-        }
     }
 }

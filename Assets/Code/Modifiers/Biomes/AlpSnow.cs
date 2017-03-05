@@ -1,8 +1,7 @@
-﻿using System.Runtime.InteropServices;
-using SimpleGenerator.Modifiers.Biomes;
+﻿using Assets.SimpleGenerator;
 using UnityEngine;
 
-namespace Assets.SimpleGenerator.Biomes
+namespace Code.Modifiers.Biomes
 {
     [RequireComponent(typeof(UnityChunkedGenerator))]
     public class AlpSnow : MonoBehaviour, IBiome<CellImpl>

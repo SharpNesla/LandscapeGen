@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading;
+using Code.Core;
 using LibNoise.Generator;
 using UnityEngine;
 
@@ -26,10 +27,10 @@ namespace Assets.SimpleGenerator
             var x = current.Position.X;
             var y = current.Position.Y;
             current.Height = (float) _noiseGenerator.GetValue(x,0,y) /1.4f + 0.28f;
-            Monitor.Enter(maximumHeight);
-            maximumHeight = Mathf.Max(maximumHeight, current.Height);
-            minimumHeight = Mathf.Min(minimumHeight, current.Height);
-            Monitor.Exit(maximumHeight);
+            //Monitor.Enter(maximumHeight);
+            //maximumHeight = Mathf.Max(maximumHeight, current.Height);
+            //minimumHeight = Mathf.Min(minimumHeight, current.Height);
+            //Monitor.Exit(maximumHeight);
             current.Height = current.Height * current.Height;
         }
     }

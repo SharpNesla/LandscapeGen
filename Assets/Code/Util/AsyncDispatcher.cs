@@ -10,10 +10,21 @@ namespace Assets.SimpleGenerator
     {
         private static List<AsyncTask> _a;
         private static ThreadPool _pool;
+        private static bool _useDotNetThreadPool;
+        public bool UseDotNetThreadPool;
+
         private void Start()
         {
             _a = new List<AsyncTask>();
-            _pool = new ThreadPool(Environment.ProcessorCount - 1);
+            _useDotNetThreadPool = UseDotNetThreadPool;
+            if (!UseDotNetThreadPool)
+            {
+                _pool = new ThreadPool(Environment.ProcessorCount - 1);
+            }
+            else
+            {
+                System.Threading.ThreadPool.SetMaxThreads(Environment.ProcessorCount, Environment.ProcessorCount);
+            }
         }
 
         private void Update()
@@ -45,7 +56,14 @@ namespace Assets.SimpleGenerator
             if (asyncTask != null && asyncTask.State == TaskState.Prepared)
             {
                 _a.Add(asyncTask);
-                asyncTask.Invoke(_pool);
+                if (_useDotNetThreadPool)
+                {
+                    System.Threading.ThreadPool.QueueUserWorkItem(asyncTask.AsyncAction);
+                }
+                else
+                {
+                    _pool.QueueTask(asyncTask);
+                }
             }
         }
     }

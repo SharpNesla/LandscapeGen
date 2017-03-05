@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices.ComTypes;
+using Code.Modifiers.Biomes;
 using SimpleGenerator.Modifiers.Biomes;
 
 namespace Assets.SimpleGenerator
@@ -24,8 +25,7 @@ namespace Assets.SimpleGenerator
                     var right   = LocalCache[LocalPosition.X + 2, LocalPosition.Y + 1].Height;
                     var min = Math.Min(top, Math.Min(bot, Math.Min(right, left)));
                     var max = Math.Max(top, Math.Max(bot, Math.Max(right, left)));
-                    var delta = max - min;
-                    return delta;
+                    return max - min;
                 }
                 return 0;
             }

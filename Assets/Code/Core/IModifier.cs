@@ -1,6 +1,6 @@
-﻿using System;
+﻿using Assets.SimpleGenerator;
 
-namespace Assets.SimpleGenerator
+namespace Code.Core
 {
     public interface IModifier<T> where T : Cell
     {

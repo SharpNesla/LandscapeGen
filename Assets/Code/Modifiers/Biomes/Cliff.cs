@@ -1,7 +1,8 @@
 ﻿using Assets.SimpleGenerator;
+using SimpleGenerator.Modifiers.Biomes;
 using UnityEngine;
 
-namespace SimpleGenerator.Modifiers.Biomes
+namespace Code.Modifiers.Biomes
 {
     [RequireComponent(typeof(UnityChunkedGenerator))]
     public class Cliff : MonoBehaviour, IBiome<CellImpl>
@@ -22,6 +23,7 @@ namespace SimpleGenerator.Modifiers.Biomes
             storage.SplatMap[current.LocalPosition.X, current.LocalPosition.Y, 1] = 0f;
             storage.SplatMap[current.LocalPosition.X, current.LocalPosition.Y, 2] = 0f;
             storage.SplatMap[current.LocalPosition.X, current.LocalPosition.Y, 3] = 0f;
+            storage.DetailLayer[current.LocalPosition.X, current.LocalPosition.Y] = 0;
         }
 
     }

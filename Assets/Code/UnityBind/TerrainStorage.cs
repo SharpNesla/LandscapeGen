@@ -31,6 +31,10 @@ namespace Assets.SimpleGenerator
             return new TerrainStorage(data);
         }
 
+        public void ResetTrees()
+        {
+            Instances.Clear();
+        }
         public void ApplyCells(CoreImpl core, Pair size, Pair position)
         {
             var cells = core.GetChunk(position);

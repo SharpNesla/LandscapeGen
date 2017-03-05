@@ -1,8 +1,8 @@
 ﻿using Assets.SimpleGenerator;
+using SimpleGenerator.Modifiers.Biomes;
 using UnityEngine;
-using UnityEngine.Assertions.Comparers;
 
-namespace SimpleGenerator.Modifiers.Biomes
+namespace Code.Modifiers.Biomes
 {
     [RequireComponent(typeof(UnityChunkedGenerator))]
     public class Grass : MonoBehaviour, IBiome<CellImpl>

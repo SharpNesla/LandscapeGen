@@ -11,7 +11,7 @@ namespace Assets.SimpleGenerator
 
         public Pair Position;
         public AsyncTask _refreshTask;
-
+        private TerrainStorage _storage;
         private void Start()
         {
             var exampleTerrainData = Parent.ChunkReference.GetComponent<Terrain>();
@@ -23,6 +23,9 @@ namespace Assets.SimpleGenerator
             _terra.detailObjectDistance = exampleTerrainData.detailObjectDistance;
             _terra.treeBillboardDistance = exampleTerrainData.treeDistance;
             _terra.terrainData = currentTerrainData;
+
+            _storage = TerrainStorage.FromTerrainData(_terra.terrainData);
+
 
             gameObject.GetComponent<TerrainCollider>().terrainData = currentTerrainData;
 
@@ -50,20 +53,19 @@ namespace Assets.SimpleGenerator
 
         public void Refresh()
         {
-            var storage = TerrainStorage.FromTerrainData(_terra.terrainData);
-
+            _storage.ResetTrees();
             var chunkTime = DateTime.UtcNow;
             _refreshTask = new AsyncTask(() =>
                 {
                     chunkTime = DateTime.Now;
                     var coordinates = new Pair(Position.X * Parent.Resolution, Position.Y * Parent.Resolution);
                     var size = new Pair(Parent.Resolution, Parent.Resolution);
-                    storage.ApplyCells(Parent.Core, size, coordinates);
+                    _storage.ApplyCells(Parent.Core, size, coordinates);
 
                 },
                 () =>
                 {
-                    _terra.terrainData.ApplyTerrainStorage(storage);
+                    _terra.terrainData.ApplyTerrainStorage(_storage);
 
                     gameObject.transform.position = new Vector3(Position.X * Parent.UnitySize.x, 0,
                         Position.Y * Parent.UnitySize.x);
