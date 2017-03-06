@@ -1,43 +1,32 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Assets.SimpleGenerator;
 using Code.Core;
 using Code.Core;
+using Code.UI.Util;
 using UnityEngine;
 namespace Code.UI.ModifiersPanel
 {
-    public class ModifierPanelsCreator : MonoBehaviour
+    public class ModifierPanelsCreator : ListView<MonoBehaviour, ModifierController>
     {
-        public MonoBehaviour[] Modifiers;
-        public GameObject PanelExample, NumberBar, SlideredNumberBar;
+        public List<MonoBehaviour> Modifiers;
         private RectTransform _contentTransform;
         private void Start()
         {
             Modifiers = FindObjectOfType<UnityChunkedGenerator>()
                 .gameObject
                 .GetComponents<IModifier<CellImpl>>()
-                .Select(x=>x as MonoBehaviour)
-                .ToArray();
-            MakePanels();
+                .Select(x=>x as MonoBehaviour).ToList();
+            Place(Modifiers, 3f);
         }
 
-        private void MakePanels()
+        public override void Setup(MonoBehaviour modifier, ModifierController controller)
         {
-            foreach (var modifier in Modifiers)
-            {
-                var panel = Instantiate(PanelExample).GetComponent<ModifierController>();
-                panel.Modifier = modifier;
-            }
-        }
-
-        private void MakePanel(ModifierController controller,MonoBehaviour modifier)
-        {
-
-            var fields = modifier
-                .GetType()
-                .GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.DeclaredOnly);
-
+            var panelName = modifier.GetType().Name;
+            controller.Modifier = modifier;
+            controller.PanelTitle = panelName;
         }
     }
 }
