@@ -9,31 +9,18 @@ namespace Code.UI.Util
 {
     public abstract class ListView<TSource, TElement> : MonoBehaviour where TElement : MonoBehaviour
     {
-        private RectTransform _backGround;
-
-        public float Spacing;
-        public RectTransform PlaceHolder;
         public TElement ElementExample;
         public Transform ElementParent;
-        public float Place(IEnumerable<TSource> list,float startOffset)
+        public void Place(IEnumerable<TSource> list)
         {
-            var cursorX = -Spacing -startOffset;
             foreach (var source in list)
             {
-                var element = Instantiate(ElementExample.gameObject).GetComponent<TElement>();
-                Setup(source, element);
+                var element = Instantiate(Setup(source)).GetComponent<TElement>();
                 var pos = element.gameObject.GetComponent<RectTransform>();
                 pos.parent = ElementParent;
-                pos.anchoredPosition3D = Vector3.zero;
-                pos.anchoredPosition3D = new Vector3(0,cursorX,0);
-                cursorX -= Spacing + pos.rect.height;
             }
-            gameObject.GetComponent<RectTransform>().sizeDelta = new Vector2(0,-cursorX);
-            return -cursorX;
-
         }
-
-        public abstract void Setup(TSource source, TElement element);
+        public abstract TElement Setup(TSource source);
     }
 
 

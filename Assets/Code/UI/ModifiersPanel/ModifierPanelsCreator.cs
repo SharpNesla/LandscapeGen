@@ -19,14 +19,13 @@ namespace Code.UI.ModifiersPanel
                 .gameObject
                 .GetComponents<IModifier<CellImpl>>()
                 .Select(x=>x as MonoBehaviour).ToList();
-            Place(Modifiers, 3f);
+            Place(Modifiers);
         }
 
-        public override void Setup(MonoBehaviour modifier, ModifierController controller)
+        public override ModifierController Setup(MonoBehaviour modifier)
         {
-            var panelName = modifier.GetType().Name;
-            controller.Modifier = modifier;
-            controller.PanelTitle = panelName;
+            ElementExample.Modifier = modifier;
+            return ElementExample;
         }
     }
 }

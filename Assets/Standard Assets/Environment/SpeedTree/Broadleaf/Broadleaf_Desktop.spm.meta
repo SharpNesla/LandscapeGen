@@ -23,10 +23,10 @@ SpeedTreeImporter:
     reflectionProbeUsage: 1
     enableBump: 1
     enableHue: 1
-    windQuality: 3
+    windQuality: 2
   - height: 0.1409432
     castShadows: 1
-    receiveShadows: 1
+    receiveShadows: 0
     useLightProbes: 0
     reflectionProbeUsage: 1
     enableBump: 0

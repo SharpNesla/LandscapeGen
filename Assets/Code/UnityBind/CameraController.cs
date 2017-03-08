@@ -1,28 +1,30 @@
 ﻿using UnityEngine;
-using UnityEngine.EventSystems;
 
-public class CameraController : MonoBehaviour
+namespace Code.UnityBind
 {
-    private Transform _cachedTransform;
-    public float Coeff, Speed;
-    private Rigidbody _physx;
-
-    void Start()
+    public class CameraController : MonoBehaviour
     {
-        _physx = gameObject.GetComponent<Rigidbody>();
-        _cachedTransform = gameObject.GetComponent<Transform>();
-    }
+        private Transform _cachedTransform;
+        public float Coeff, Speed;
+        private Rigidbody _physx;
 
-    void FixedUpdate()
-    {
-        var xRot = Input.GetAxis("Mouse X") * Coeff;
-        var yRot = -Input.GetAxis("Mouse Y") * Coeff;
-        _cachedTransform.rotation = Quaternion.Euler(_cachedTransform.rotation.eulerAngles + new Vector3(yRot, xRot,0));
-        var horiz = Input.GetAxis("Horizontal");
-        var vertical = Input.GetAxis("Vertical");
+        void Start()
+        {
+            _physx = gameObject.GetComponent<Rigidbody>();
+            _cachedTransform = gameObject.GetComponent<Transform>();
+        }
 
-        _physx.MovePosition(_cachedTransform.localPosition + _cachedTransform.rotation * new Vector3(horiz, 0, vertical) * Speed);
+        void FixedUpdate()
+        {
+            var xRot = Input.GetAxis("Mouse X") * Coeff;
+            var yRot = -Input.GetAxis("Mouse Y") * Coeff;
+            _cachedTransform.rotation = Quaternion.Euler(_cachedTransform.rotation.eulerAngles + new Vector3(yRot, xRot,0));
+            var horiz = Input.GetAxis("Horizontal");
+            var vertical = Input.GetAxis("Vertical");
 
-        Speed = Input.GetKey(KeyCode.LeftShift) ? 3f : 1;
+            _physx.MovePosition(_cachedTransform.localPosition + _cachedTransform.rotation * new Vector3(horiz, 0, vertical) * Speed);
+
+            Speed = Input.GetKey(KeyCode.LeftShift) ? 3f : 1;
+        }
     }
 }

@@ -1,4 +1,6 @@
-﻿namespace Code.UI
+﻿using Code.UnityBind;
+
+namespace Code.UI
 {
     public static class Extensions
     {

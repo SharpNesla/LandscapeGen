@@ -1,13 +1,14 @@
 ﻿using System;
-using System.Security.Cryptography.X509Certificates;
+using Assets.SimpleGenerator;
 using UnityEngine;
 
-namespace Assets.SimpleGenerator
+namespace Code.UnityBind
 {
     public class Cursor : MonoBehaviour
     {
         public UnityChunkedGenerator Generator;
         private Transform _vector3;
+
         private void Start()
         {
             Generator = gameObject.GetComponent<UnityChunkedGenerator>();

@@ -6,9 +6,9 @@ namespace Code.UI.ModifiersPanel
 {
     public class NumberController : MonoBehaviour, IFieldController
     {
-        private FieldInfo _info;
+        protected FieldInfo Info;
         public Text NameLabel;
-        private object _object;
+        protected object Object;
 
         public InputField Field;
 
@@ -22,21 +22,21 @@ namespace Code.UI.ModifiersPanel
 
         public void SetValue(string valuestr)
         {
-            if (_info.GetValue(_object) is int)
+            if (Info.GetValue(Object) is int)
             {
-                _info.SetValue(_object, int.Parse(valuestr));
+                Info.SetValue(Object, int.Parse(valuestr));
             }
             else
             {
-                _info.SetValue(_object, float.Parse(valuestr));
+                Info.SetValue(Object, float.Parse(valuestr));
             }
         }
 
         public void Bind(object obj, FieldInfo field)
         {
-            _object = obj;
-            _info = field;
-            Field.text = _info.GetValue(_object).ToString();
+            Object = obj;
+            Info = field;
+            Field.text = Info.GetValue(Object).ToString();
         }
     }
 }

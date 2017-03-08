@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Code.UnityBind;
+using UnityEngine;
 
 namespace Code.UI
 {

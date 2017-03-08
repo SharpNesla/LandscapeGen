@@ -5,6 +5,7 @@ using Code.Core;
 using UnityEditor.VersionControl;
 using UnityEngine;
 using UnityEngine.Networking;
+using Cursor = Code.UnityBind.Cursor;
 
 namespace Assets.SimpleGenerator
 {
@@ -22,10 +23,15 @@ namespace Assets.SimpleGenerator
         public Vector2 UnitySize;
 
         public CoreImpl Core;
-        public List<UnityChunk> _refreshingChunks;
+        private List<UnityChunk> _refreshingChunks;
         private List<Pair> _refreshingPositions;
-        private void Start()
+
+        private void Regenerate()
         {
+            foreach (var chunk in _chunks)
+            {
+                Destroy(chunk);
+            }
             Core = new CoreImpl(coords =>
                 {
                     var i = new CellImpl(coords) {Core = Core};
