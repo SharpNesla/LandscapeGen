@@ -13,9 +13,6 @@ namespace Assets.SimpleGenerator
         private Billow _noiseGenerator;
         private Perlin _hillModulator, _continentModulator;
         public float HillModulatorFrequency;
-
-        public float maximumHeight;
-        public float minimumHeight;
         public void Start()
         {
             _noiseGenerator = new Billow{Frequency = Frequency,OctaveCount = Octaves, Seed = 34};

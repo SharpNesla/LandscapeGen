@@ -5,19 +5,15 @@ using UnityEngine;
 namespace Code.Modifiers.Biomes
 {
     [RequireComponent(typeof(UnityChunkedGenerator))]
-    public class Cliff : MonoBehaviour, IBiome<CellImpl>
+    public class Cliff : Biome<CellImpl>
     {
 
-        public void Start()
-        {
-
-        }
-        public void Callback(CellImpl current)
+        public override void Callback(CellImpl current)
         {
             current.Biomes.Add(this);
         }
 
-        public void Apply(CellImpl current, TerrainStorage storage)
+        public override void Apply(CellImpl current, TerrainStorage storage)
         {
             storage.SplatMap[current.LocalPosition.X, current.LocalPosition.Y, 0] = 1f;
             storage.SplatMap[current.LocalPosition.X, current.LocalPosition.Y, 1] = 0f;

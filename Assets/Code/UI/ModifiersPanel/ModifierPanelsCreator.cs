@@ -22,10 +22,10 @@ namespace Code.UI.ModifiersPanel
             Place(Modifiers);
         }
 
-        public override ModifierController Setup(MonoBehaviour modifier)
+        public override ModifierController Setup(MonoBehaviour source, ModifierController element)
         {
-            ElementExample.Modifier = modifier;
-            return ElementExample;
+            element.Modifier = source;
+            return element;
         }
     }
 }

@@ -8,7 +8,7 @@ namespace Assets.SimpleGenerator
 {
     public class CellImpl : Cell
     {
-        public List<IBiome<CellImpl>> Biomes;
+        public List<Biome<CellImpl>> Biomes;
         public Pair LocalPosition;
         public CoreImpl Core;
         public CellImpl[,] LocalCache;
@@ -33,7 +33,7 @@ namespace Assets.SimpleGenerator
 
         public CellImpl(Pair coordinates, float height = 0) : base(coordinates, height)
         {
-            Biomes = new List<IBiome<CellImpl>>();
+            Biomes = new List<Biome<CellImpl>>();
         }
 
         private bool CheckLocalPosition()

@@ -5,16 +5,13 @@ using UnityEngine;
 namespace Code.Modifiers.Biomes
 {
     [RequireComponent(typeof(UnityChunkedGenerator))]
-    public class Grass : MonoBehaviour, IBiome<CellImpl>
+    public class Grass : Biome<CellImpl>
     {
         public float TopBound, LowBound;
         public int GrassCount;
         public float MaxCellElevation;
-        public void Start()
-        {
-        }
 
-        public void Callback(CellImpl current)
+        public override void Callback(CellImpl current)
         {
             if (current.Height < TopBound && current.Height > LowBound &&current.Elevation < MaxCellElevation)
             {
@@ -22,7 +19,7 @@ namespace Code.Modifiers.Biomes
             }
         }
 
-        public void Apply(CellImpl current, TerrainStorage storage)
+        public override void Apply(CellImpl current, TerrainStorage storage)
         {
             storage.SplatMap[current.LocalPosition.X, current.LocalPosition.Y, 0] = 0f;
             storage.SplatMap[current.LocalPosition.X, current.LocalPosition.Y, 2] = 3f;

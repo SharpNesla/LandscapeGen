@@ -6,7 +6,7 @@ using UnityEngine;
 namespace Code.Modifiers.Biomes
 {
     [RequireComponent(typeof(UnityChunkedGenerator))]
-    public class RegularForest : MonoBehaviour, IBiome<CellImpl>
+    public class RegularForest : Biome<CellImpl>
     {
         private float _topBound, _lowBound;
         [Range(25,10000)]
@@ -15,7 +15,7 @@ namespace Code.Modifiers.Biomes
         public int MinTreeHeight, MaxTreeHeight;
         public float ForestModulatorFrequency;
         private Perlin _hillModulator;
-        public void Start()
+        public override void Start()
         {
             var grassBiome = gameObject.GetComponent<Grass>();
             _hillModulator = new Perlin{OctaveCount = 1, Frequency = ForestModulatorFrequency, Seed = 34};
@@ -23,7 +23,7 @@ namespace Code.Modifiers.Biomes
             _lowBound = grassBiome.LowBound;
         }
 
-        public void Callback(CellImpl current)
+        public override void Callback(CellImpl current)
         {
             var value = current.Position.RandomFromPosition(0, TreeChance, 54);
             if (current.Height < _topBound && current.Height > _lowBound
@@ -35,7 +35,7 @@ namespace Code.Modifiers.Biomes
             }
         }
 
-        public void Apply(CellImpl current, TerrainStorage storage)
+        public override void Apply(CellImpl current, TerrainStorage storage)
         {
             storage.Instances.Add(MakeTree(current, current.Core.Resolution));
         }

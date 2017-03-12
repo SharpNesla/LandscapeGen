@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System;
+using System.Reflection;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -22,14 +23,22 @@ namespace Code.UI.ModifiersPanel
 
         public void SetValue(string valuestr)
         {
-            if (Info.GetValue(Object) is int)
+            try
             {
-                Info.SetValue(Object, int.Parse(valuestr));
+                if (Info.GetValue(Object) is int)
+                {
+                    Info.SetValue(Object, int.Parse(valuestr));
+                }
+                else
+                {
+                    Info.SetValue(Object, float.Parse(valuestr));
+                }
             }
-            else
+            catch (Exception)
             {
-                Info.SetValue(Object, float.Parse(valuestr));
+                // ignored
             }
+
         }
 
         public void Bind(object obj, FieldInfo field)

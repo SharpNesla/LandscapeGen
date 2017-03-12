@@ -4,7 +4,7 @@ using UnityEngine;
 namespace Code.Modifiers.Biomes
 {
     [RequireComponent(typeof(UnityChunkedGenerator))]
-    public class RockSpawner : MonoBehaviour, IBiome<CellImpl>
+    public class RockSpawner : Biome<CellImpl>
     {
         [Range(25, 10000)] public int RockChance;
 
@@ -14,7 +14,7 @@ namespace Code.Modifiers.Biomes
         {
         }
 
-        public void Callback(CellImpl current)
+        public override void Callback(CellImpl current)
         {
             var value = current.Position.RandomFromPosition(0, RockChance, 54);
             if (value == 0)
@@ -23,12 +23,12 @@ namespace Code.Modifiers.Biomes
             }
         }
 
-        public void Apply(CellImpl current, TerrainStorage storage)
+        public override void Apply(CellImpl current, TerrainStorage storage)
         {
-            storage.Instances.Add(MakeTree(current, current.Core.Resolution));
+            storage.Instances.Add(MakeRock(current, current.Core.Resolution));
         }
 
-        TreeInstance MakeTree(CellImpl current, int localScale)
+        private TreeInstance MakeRock(CellImpl current, int localScale)
         {
             TreeInstance instance = new TreeInstance
             {

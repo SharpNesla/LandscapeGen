@@ -45,7 +45,6 @@ namespace Assets.SimpleGenerator
                 {
                     var cell = cells[x + 1, y + 1];
                     Heights[x,y] = cells[x, y].Height;
-                    cell.LocalPosition = new Pair(x,y);
                     for (var index = 0; index < cell.Biomes.Count; index++)
                     {
                         var biome = cell.Biomes[index];

@@ -10,7 +10,7 @@ using Cursor = Code.UnityBind.Cursor;
 namespace Assets.SimpleGenerator
 {
     [RequireComponent (typeof (Cursor))]
-    public class UnityChunkedGenerator : MonoBehaviour
+    public class UnityChunkedGenerator : MonoBehaviour,IModifier<CellImpl>
     {
         private List<UnityChunk> _chunks;
         public GameObject ChunkReference;
@@ -26,11 +26,14 @@ namespace Assets.SimpleGenerator
         private List<UnityChunk> _refreshingChunks;
         private List<Pair> _refreshingPositions;
 
-        private void Regenerate()
+        public void Regenerate()
         {
-            foreach (var chunk in _chunks)
+            if (_chunks != null)
             {
-                Destroy(chunk);
+                foreach (var chunk in _chunks)
+                {
+                    Destroy(chunk);
+                }
             }
             Core = new CoreImpl(coords =>
                 {
@@ -41,8 +44,19 @@ namespace Assets.SimpleGenerator
             _chunks = CreateChunks();
             _refreshingChunks = new List<UnityChunk>();
             _refreshingPositions = new List<Pair>();
+            StartCoroutine(Create());
         }
 
+        private IEnumerator Create()
+        {
+            yield return new WaitForFixedUpdate();
+            CoreUtils.Foreach(new Pair(ViewDistance * 2 + 1,ViewDistance * 2 + 1), position =>
+            {
+                var current = _chunks[position.Y * (ViewDistance * 2 + 1) + position.X];
+                current.Position = position + new Pair(-ViewDistance, -ViewDistance) + CurrentChunkPosition;
+                current.Refresh();
+            });
+        }
         public void Update()
         {
             if (Input.GetKeyDown(KeyCode.R))
@@ -51,13 +65,7 @@ namespace Assets.SimpleGenerator
             }
             if (Input.GetKeyDown(KeyCode.F))
             {
-                CoreUtils.Foreach(new Pair(ViewDistance * 2 + 1,ViewDistance * 2 + 1), position =>
-                {
-                    var current = _chunks[position.Y * (ViewDistance * 2 + 1) + position.X];
-                    current.Position = position + new Pair(-ViewDistance, -ViewDistance) + CurrentChunkPosition;
-                    current.Refresh();
-                });
-                var b = 0;
+                Regenerate();
             }
         }
 
@@ -105,5 +113,13 @@ namespace Assets.SimpleGenerator
             _refreshingPositions.Clear();
         }
 
+        public void Callback(CellImpl current)
+        {
+
+        }
+
+        public void Start()
+        {
+        }
     }
 }

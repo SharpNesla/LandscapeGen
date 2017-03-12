@@ -9,18 +9,24 @@ namespace Code.UI.Util
 {
     public abstract class ListView<TSource, TElement> : MonoBehaviour where TElement : MonoBehaviour
     {
-        public TElement ElementExample;
+        public TElement[] ElementExamples;
         public Transform ElementParent;
         public void Place(IEnumerable<TSource> list)
         {
             foreach (var source in list)
             {
-                var element = Instantiate(Setup(source)).GetComponent<TElement>();
+                var prototype = Instantiate(SelectElement(source).gameObject);
+                var element = Setup(source ,prototype.GetComponent<TElement>());
                 var pos = element.gameObject.GetComponent<RectTransform>();
                 pos.parent = ElementParent;
             }
         }
-        public abstract TElement Setup(TSource source);
+        public abstract TElement Setup(TSource source, TElement element);
+
+        public virtual TElement SelectElement(TSource source)
+        {
+            return ElementExamples[0];
+        }
     }
 
 

@@ -36,24 +36,32 @@ namespace Code.UI.ModifiersPanel
         {
             Modifier.enabled = value;
         }
-        public override NumberController Setup(FieldInfo source)
+
+        public override NumberController SelectElement(FieldInfo source)
         {
-            var attrubutes = source.GetCustomAttributes(false);
-            if (attrubutes.Any(x => x is RangeAttribute))
+            return source.GetCustomAttributes(false).Any(x => x is RangeAttribute)
+                ? ElementExamples[0] : ElementExamples[1];
+        }
+
+        public override NumberController Setup(FieldInfo source, NumberController element)
+        {
+            var controller = element as SlideredNumberController;
+            if (controller != null)
             {
-                var range = attrubutes.First(x => x is RangeAttribute) as RangeAttribute;
+                var range = source.GetCustomAttributes(false)
+                    .First(x => x is RangeAttribute) as RangeAttribute;
                 if (range != null)
                 {
-                    SlideredNumber.Max = range.max;
-                    SlideredNumber.Min = range.min;
+                    controller.Max = range.max;
+                    controller.Min = range.min;
                 }
-                SlideredNumber.NameLabel.text = source.Name;
-                SlideredNumber.Bind(Modifier, source);
-                return SlideredNumber;
+                controller.NameLabel.text = source.Name;
+                controller.Bind(Modifier, source);
+                return controller;
             }
-            ElementExample.NameLabel.text = source.Name;
-            ElementExample.Bind(Modifier, source);
-            return ElementExample;
+            element.NameLabel.text = source.Name;
+            element.Bind(Modifier, source);
+            return element;
         }
     }
 }

@@ -3,7 +3,15 @@ guid: b007953fb4770d24d88c18d8cfe2bdec
 ModelImporter:
   serializedVersion: 19
   fileIDToRecycleName:
+    100000: polySurface307
+    100002: //RootNode
+    400000: polySurface307
+    400002: //RootNode
+    2300000: polySurface307
+    3300000: polySurface307
     4300000: polySurface307
+    6400000: polySurface307
+    11100000: //RootNode
   materials:
     importMaterials: 0
     materialName: 0
@@ -11,7 +19,7 @@ ModelImporter:
   animations:
     legacyGenerateAnimations: 4
     bakeSimulation: 0
-    resampleRotations: 1
+    resampleCurves: 1
     optimizeGameObjects: 0
     motionNodeName: 
     animationImportErrors: 
@@ -50,6 +58,7 @@ ModelImporter:
   importAnimation: 1
   copyAvatar: 0
   humanDescription:
+    serializedVersion: 2
     human: []
     skeleton: []
     armTwist: 0.5
@@ -60,7 +69,10 @@ ModelImporter:
     legStretch: 0.05
     feetSpacing: 0
     rootMotionBoneName: 
+    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
     hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 0
   lastHumanDescriptionAvatarSource: {instanceID: 0}
   animationType: 1
   humanoidOversampling: 1
