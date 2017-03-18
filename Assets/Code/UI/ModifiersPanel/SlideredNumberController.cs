@@ -19,6 +19,7 @@ namespace Code.UI.ModifiersPanel
                 _max = value;
                 MaxText.text = _max.ToString();
                 Slider.maxValue = _max;
+                
             }
         }
 
@@ -48,5 +49,10 @@ namespace Code.UI.ModifiersPanel
             }
         }
         private float _max, _min;
+        public override void Bind(object obj, FieldInfo field)
+        {
+            base.Bind(obj,field);
+            Slider.value = float.Parse(Info.GetValue(Object).ToString());
+        }
     }
 }

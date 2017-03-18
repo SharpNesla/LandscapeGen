@@ -4,6 +4,7 @@ using System.Security.Cryptography.X509Certificates;
 using Assets.SimpleGenerator;
 using Code.Util;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Code.UI
 {
@@ -12,6 +13,7 @@ namespace Code.UI
         public string _fileName;
         public Pair _position;
 
+        public RawImage BiomeTexture, HeightmapTexture;
 
         public void SetFileName(string str)
         {
@@ -29,8 +31,20 @@ namespace Code.UI
         }
         public void Generate()
         {
-            var generator =  FindObjectOfType<UnityChunkedGenerator>().Core;
-            File.WriteAllBytes(_fileName, generator.BiomeTexture(_position).EncodeToPNG());
+            var generator = FindObjectOfType<UnityChunkedGenerator>().Core;
+            var biomeTexture = generator.BiomeTexture(_position);
+            var heightTexture = generator.HeightTexture(_position);
+            BiomeTexture.texture = biomeTexture;
+            HeightmapTexture.texture = heightTexture;
+        }
+
+        public void Export()
+        {
+            var generator = FindObjectOfType<UnityChunkedGenerator>().Core;
+            var biomeTexture = generator.BiomeTexture(_position);
+            var heightTexture = generator.HeightTexture(_position);
+            File.WriteAllBytes("BiomeMap.png" ,biomeTexture.EncodeToPNG());
+            File.WriteAllBytes("HeightMap.png", heightTexture.EncodeToPNG());
         }
     }
 }

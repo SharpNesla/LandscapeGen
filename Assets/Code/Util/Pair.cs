@@ -23,7 +23,10 @@ namespace Assets.SimpleGenerator
         {
             return new Pair(first.X + second.X, first.Y + second.Y);
         }
-
+        public static Pair operator *(Pair first, int second)
+        {
+            return new Pair(first.X * second, first.Y * second);
+        }
         public static bool operator !=(Pair first, Pair second)
         {
             return !(first == second);

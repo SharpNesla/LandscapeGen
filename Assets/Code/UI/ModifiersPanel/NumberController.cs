@@ -41,7 +41,7 @@ namespace Code.UI.ModifiersPanel
 
         }
 
-        public void Bind(object obj, FieldInfo field)
+        public virtual void Bind(object obj, FieldInfo field)
         {
             Object = obj;
             Info = field;
