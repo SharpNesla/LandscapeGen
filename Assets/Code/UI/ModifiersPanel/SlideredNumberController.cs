@@ -27,11 +27,14 @@ namespace Code.UI.ModifiersPanel
             if (Info.GetValue(Object) is int)
             {
                 Info.SetValue(Object, (int)Slider.value);
+                this.Field.text = ((int)Slider.value).ToString();
             }
             else
             {
                 Info.SetValue(Object, Slider.value);
+                this.Field.text = Slider.value.ToString();
             }
+            
         }
 
         public float Min

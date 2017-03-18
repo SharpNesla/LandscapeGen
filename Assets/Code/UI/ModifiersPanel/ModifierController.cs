@@ -30,6 +30,7 @@ namespace Code.UI.ModifiersPanel
                 .Where(x => x.GetValue(Modifier) is float || x.GetValue(Modifier) is int)
                 .ToList();
             Place(Fields);
+            this.GetComponent<RectTransform>().localScale = new Vector3(1,1,1);
         }
 
         public void SetActiveness(bool value)
