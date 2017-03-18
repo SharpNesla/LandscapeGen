@@ -6,9 +6,10 @@ namespace Code.UI
     public class UiController : MonoBehaviour
     {
         private CameraController _cameraController;
-
+        public GameObject UI;
         private void Start()
         {
+            Application.targetFrameRate = 60;
             _cameraController = FindObjectOfType<CameraController>();
         }
 
@@ -17,6 +18,7 @@ namespace Code.UI
             if (Input.GetKeyDown(KeyCode.Escape))
             {
                 _cameraController.ToggleCameraController();
+                UI.SetActive(!UI.activeSelf);
             }
         }
 
