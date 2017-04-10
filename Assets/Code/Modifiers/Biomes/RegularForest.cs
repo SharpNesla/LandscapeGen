@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using Assets.SimpleGenerator;
+using Assets.SimpleGenerator.TerrainModules;
 using LibNoise.Generator;
 using UnityEngine;
 
@@ -14,7 +15,13 @@ namespace Code.Modifiers.Biomes
 
         public int MinTreeHeight, MaxTreeHeight;
         public float ForestModulatorFrequency;
+
+        public TerrainObject Tree;
+
         private Perlin _hillModulator;
+
+        private int _index;
+
         public override void Start()
         {
             var grassBiome = gameObject.GetComponent<Grass>();
@@ -44,14 +51,19 @@ namespace Code.Modifiers.Biomes
         {
             var instance = new TreeInstance
             {
-                prototypeIndex = 0,
+                prototypeIndex = _index,
                 rotation = current.Position.RandomFromPosition(0, 359,54),
-                heightScale = (float) current.Position.RandomFromPosition(MinTreeHeight,MaxTreeHeight,54) / 10,
+                heightScale = (float) current.Position.RandomFromPosition(Tree.MinimalTreeScale,Tree.MaximalTreeScale,54) / 10,
                 position = new Vector3 ((float) current.LocalPosition.Y / localScale, current.Height,
                     (float) current.LocalPosition.X / localScale)
             };
             instance.widthScale = instance.heightScale;
             return instance;
+        }
+
+        public override void ApplyPrototypes(Terrain terrain)
+        {
+            _index = Tree.ApplyTree(terrain);
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Assets.SimpleGenerator;
+using Assets.SimpleGenerator.TerrainModules;
 using UnityEngine;
 
 namespace Code.Modifiers.Biomes
@@ -7,12 +8,9 @@ namespace Code.Modifiers.Biomes
     public class RockSpawner : Biome<CellImpl>
     {
         [Range(25, 10000)] public int RockChance;
+        public TerrainObject Rock;
 
-
-        public int MinTreeHeight, MaxTreeHeight;
-        public void Start()
-        {
-        }
+        private int _index;
 
         public override void Callback(CellImpl current)
         {
@@ -32,14 +30,18 @@ namespace Code.Modifiers.Biomes
         {
             TreeInstance instance = new TreeInstance
             {
-                prototypeIndex = 1,
+                prototypeIndex = _index,
                 rotation = current.Position.RandomFromPosition(0, 359,54),
-                heightScale = (float) current.Position.RandomFromPosition(MinTreeHeight,MaxTreeHeight,54) / 10,
+                heightScale = (float) current.Position.RandomFromPosition(Rock.MinimalTreeScale,Rock.MaximalTreeScale,54) / 10,
                 position = new Vector3 ((float) current.LocalPosition.Y / localScale, current.Height,
                     (float) current.LocalPosition.X / localScale)
             };
             instance.widthScale = instance.heightScale;
             return instance;
+        }
+        public override void ApplyPrototypes(Terrain terrain)
+        {
+            _index = Rock.ApplyTree(terrain);
         }
     }
 }

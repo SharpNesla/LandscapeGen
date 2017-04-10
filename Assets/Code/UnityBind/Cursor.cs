@@ -1,5 +1,6 @@
 ﻿using System;
 using Assets.SimpleGenerator;
+using Assets.SimpleGenerator.TerrainModules;
 using UnityEngine;
 
 namespace Code.UnityBind
@@ -17,7 +18,7 @@ namespace Code.UnityBind
 
         private void Update()
         {
-            var currentPosition = _vector3.position / Generator.UnitySize.x;
+            var currentPosition = _vector3.position / Generator.TerrainSettings.TerrainScale.x;
             var currentNormalizedPosition = new Vector2((float) Math.Floor(currentPosition.x),
                 (float) Math.Floor(currentPosition.z));
             if (Generator.CurrentChunkPosition != currentNormalizedPosition)

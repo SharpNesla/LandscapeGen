@@ -19,7 +19,7 @@ namespace Assets.SimpleGenerator
             _useDotNetThreadPool = UseDotNetThreadPool;
             if (!UseDotNetThreadPool)
             {
-                _pool = new ThreadPool(Environment.ProcessorCount - 1);
+                _pool = new ThreadPool(Environment.ProcessorCount - 2);
             }
             else
             {

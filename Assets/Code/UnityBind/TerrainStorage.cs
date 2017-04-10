@@ -12,8 +12,10 @@ namespace Assets.SimpleGenerator
     {
         public float[,] Heights;
         public float[,,] SplatMap;
-        public int[,] DetailLayer;
+        public int [][,] DetailLayers;
         public List<TreeInstance> Instances;
+
+        public List<SplatPrototype> Prototypes;
 
         private TerrainStorage(TerrainData data)
         {
@@ -22,7 +24,12 @@ namespace Assets.SimpleGenerator
             [data.alphamapWidth,
                 data.alphamapWidth,
                 data.splatPrototypes.Length];
-            DetailLayer = new int[data.detailHeight, data.detailWidth];
+            DetailLayers = new int[data.detailPrototypes.Length][,];
+            for (int i = 0; i < data.detailPrototypes.Length; i++)
+            {
+                DetailLayers[i] = new int[data.detailHeight, data.detailWidth];
+            }
+
             Instances = new List<TreeInstance>();
         }
 
@@ -71,7 +78,10 @@ namespace Assets.SimpleGenerator
         {
             data.SetHeights(0, 0, storage.Heights);
             data.SetAlphamaps(0, 0, storage.SplatMap);
-            data.SetDetailLayer(0, 0, 0, storage.DetailLayer);
+            for (int i = 0; i < data.detailPrototypes.Length; i++)
+            {
+                data.SetDetailLayer(0, 0, i , storage.DetailLayers[i]);
+            }
             data.treeInstances = storage.Instances.ToArray();
         }
     }

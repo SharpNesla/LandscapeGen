@@ -1,4 +1,7 @@
-﻿using Assets.SimpleGenerator;
+﻿using System;
+using System.Linq;
+using Assets.SimpleGenerator;
+using Assets.SimpleGenerator.TerrainModules;
 using SimpleGenerator.Modifiers.Biomes;
 using UnityEngine;
 
@@ -10,7 +13,9 @@ namespace Code.Modifiers.Biomes
         public float TopBound, LowBound;
         public int GrassCount;
         public float MaxCellElevation;
-
+        public TerrainTexture SplatTexture;
+        public TerrainGrass GrassDetailLayer;
+        private int _index, _detailIndex;
         public override void Callback(CellImpl current)
         {
             if (current.Height < TopBound && current.Height > LowBound &&current.Elevation < MaxCellElevation)
@@ -22,8 +27,14 @@ namespace Code.Modifiers.Biomes
         public override void Apply(CellImpl current, TerrainStorage storage)
         {
             storage.SplatMap[current.LocalPosition.X, current.LocalPosition.Y, 0] = 0f;
-            storage.SplatMap[current.LocalPosition.X, current.LocalPosition.Y, 2] = 3f;
-            storage.DetailLayer[current.LocalPosition.X, current.LocalPosition.Y] = GrassCount;
+            storage.SplatMap[current.LocalPosition.X, current.LocalPosition.Y, _index] = 1f;
+            storage.DetailLayers[_detailIndex][current.LocalPosition.X, current.LocalPosition.Y] = GrassCount;
+        }
+
+        public override void ApplyPrototypes(Terrain terrain)
+        {
+           _detailIndex = GrassDetailLayer.ApplyGrass(terrain);
+           _index = SplatTexture.ApplyTexture(terrain);
         }
 
     }

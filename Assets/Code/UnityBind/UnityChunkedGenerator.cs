@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using Assets.SimpleGenerator.TerrainModules;
 using Code.Core;
+using Code.Modifiers.Biomes;
 using UnityEngine;
 using UnityEngine.Networking;
 using Cursor = Code.UnityBind.Cursor;
@@ -12,14 +15,11 @@ namespace Assets.SimpleGenerator
     public class UnityChunkedGenerator : MonoBehaviour,IModifier<CellImpl>
     {
         private List<UnityChunk> _chunks;
-        public GameObject ChunkReference;
+        public TerrainSettings TerrainSettings;
 
         public Vector2 CurrentChunkPosition;
 
         public int ViewDistance;
-        public int Resolution;
-        public Pair Test;
-        public Vector2 UnitySize;
 
         public CoreImpl Core;
         private List<UnityChunk> _refreshingChunks;
@@ -34,16 +34,29 @@ namespace Assets.SimpleGenerator
                     Destroy(chunk);
                 }
             }
-            Core = new CoreImpl(coords =>
-                {
-                    var i = new CellImpl(coords) {Core = Core};
-                    return i;
-                },Resolution,
-                Array.FindAll(gameObject.GetComponents<IModifier<CellImpl>>(), modifier => ((MonoBehaviour) modifier).enabled));
-            _chunks = CreateChunks();
+
+            var modifiers = Array.FindAll(
+                gameObject.GetComponents<IModifier<CellImpl>>(),
+                modifier => ((MonoBehaviour) modifier).enabled);
+            var biomes = modifiers.OfType<Biome<CellImpl>>();
+
+            foreach (var modifier in modifiers)
+            {
+                modifier.Start();
+            }
+
+            Core = new CoreImpl(CellInitializer,TerrainSettings.Resolution,
+                modifiers);
+            _chunks = CreateChunks(biomes);
+
             _refreshingChunks = new List<UnityChunk>();
             _refreshingPositions = new List<Pair>();
             StartCoroutine(Create());
+        }
+
+        private CellImpl CellInitializer(Pair coords)
+        {
+            return new CellImpl(coords) {Core = Core};
         }
 
         private IEnumerator Create()
@@ -68,17 +81,25 @@ namespace Assets.SimpleGenerator
             }
         }
 
-        public List<UnityChunk> CreateChunks()
+        public List<UnityChunk> CreateChunks(IEnumerable<Biome<CellImpl>> biomes)
         {
             var chunksCount = (ViewDistance * 2 + 1) * (ViewDistance * 2 + 1);
             var chunks = new List<UnityChunk>(chunksCount);
+
             for (var y = -ViewDistance; y <= ViewDistance; y++)
             {
                 for (var x = -ViewDistance; x <= ViewDistance; x++)
                 {
-                    var chunk = Instantiate(ChunkReference).GetComponent<UnityChunk>();
-                    chunk.Position = new Pair(x,y);
+                    var terrain = TerrainSettings.CreateTerrain();
+                    terrain.gameObject.transform.parent = transform;
+                    foreach (var biome in biomes)
+                    {
+                        biome.ApplyPrototypes(terrain);
+                    }
+                    var chunk = terrain.gameObject.AddComponent<UnityChunk>();
                     chunk.Parent = this;
+                    chunk.Terra = terrain;
+                    chunk.Position = new Pair((int) x, (int) y);
                     chunks.Add(chunk);
                 }
             }
@@ -87,7 +108,6 @@ namespace Assets.SimpleGenerator
 
         public void Refresh()
         {
-
             _refreshingChunks.AddRange(_chunks);
             var positions = new List<Pair>();
             CoreUtils.Foreach(new Pair(ViewDistance * 2 + 1,ViewDistance * 2 + 1), localPosition =>
