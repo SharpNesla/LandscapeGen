@@ -5,6 +5,7 @@ using System.Linq;
 using Assets.SimpleGenerator.TerrainModules;
 using Code.Core;
 using Code.Modifiers.Biomes;
+using Code.Util;
 using UnityEngine;
 using UnityEngine.Networking;
 using Cursor = Code.UnityBind.Cursor;
@@ -12,7 +13,7 @@ using Cursor = Code.UnityBind.Cursor;
 namespace Assets.SimpleGenerator
 {
     [RequireComponent (typeof (Cursor))]
-    public class UnityChunkedGenerator : MonoBehaviour,IModifier<CellImpl>
+    public class UnityChunkedGenerator : MonoBehaviour, IInterfaceElement
     {
         private List<UnityChunk> _chunks;
         public TerrainSettings TerrainSettings;
@@ -25,7 +26,7 @@ namespace Assets.SimpleGenerator
         private List<UnityChunk> _refreshingChunks;
         private List<Pair> _refreshingPositions;
 
-        public void Regenerate()
+        public void Refresh()
         {
             if (_chunks != null)
             {
@@ -73,11 +74,7 @@ namespace Assets.SimpleGenerator
         {
             if (Input.GetKeyDown(KeyCode.R))
             {
-                Refresh();
-            }
-            if (Input.GetKeyDown(KeyCode.F))
-            {
-                Regenerate();
+                RefreshChunks();
             }
         }
 
@@ -106,7 +103,7 @@ namespace Assets.SimpleGenerator
             return chunks;
         }
 
-        public void Refresh()
+        public void RefreshChunks()
         {
             _refreshingChunks.AddRange(_chunks);
             var positions = new List<Pair>();
@@ -132,13 +129,9 @@ namespace Assets.SimpleGenerator
             _refreshingPositions.Clear();
         }
 
-        public void Callback(CellImpl current)
-        {
-
-        }
-
         public void Start()
         {
         }
+
     }
 }

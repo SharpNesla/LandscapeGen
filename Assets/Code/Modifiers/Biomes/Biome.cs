@@ -14,6 +14,6 @@ namespace Code.Modifiers.Biomes
         public abstract void Callback(T current);
         public virtual void Start() {}
         public virtual void ApplyPrototypes(Terrain terrain) {}
-
+        public void Refresh() {}
     }
 }

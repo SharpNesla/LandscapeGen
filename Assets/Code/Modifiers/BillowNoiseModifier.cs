@@ -13,8 +13,6 @@ namespace Assets.SimpleGenerator
         private Billow _noiseGenerator;
         private Perlin _hillModulator, _continentModulator;
         public float HillModulatorFrequency;
-        public float maximumHeight;
-        public float minimumHeight;
 
         public void Start()
         {
@@ -27,11 +25,9 @@ namespace Assets.SimpleGenerator
             var x = current.Position.X;
             var y = current.Position.Y;
             current.Height = Mathf.Abs((float) (_noiseGenerator.GetValue(x,0,y) /1.4f + 0.28f));
-            //Monitor.Enter(maximumHeight);
-            maximumHeight = Mathf.Max(maximumHeight, current.Height);
-            minimumHeight = Mathf.Min(minimumHeight, current.Height);
-            //Monitor.Exit(maximumHeight);
             current.Height = current.Height * current.Height;
         }
+
+        public void Refresh() {}
     }
 }

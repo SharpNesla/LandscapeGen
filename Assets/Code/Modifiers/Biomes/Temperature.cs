@@ -4,9 +4,14 @@ using UnityEngine.SocialPlatforms;
 
 namespace Code.Modifiers.Biomes
 {
-    public class Temperature : IModifier<CellImpl>
+    public class Temperature : Biome<CellImpl>
     {
-        public void Callback(CellImpl current)
+        public override void Apply(CellImpl current, TerrainStorage storage)
+        {
+
+        }
+
+        public override void Callback(CellImpl current)
         {
 
         }

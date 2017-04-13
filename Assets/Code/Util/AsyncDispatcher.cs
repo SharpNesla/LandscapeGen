@@ -1,31 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
+using Code.Core;
+using Code.Util;
 using SimpleGenerator.Util;
 using UnityEngine;
 using ThreadPool = SimpleGenerator.Util.ThreadPool;
 
 namespace Assets.SimpleGenerator
 {
-    public class AsyncDispatcher : MonoBehaviour
+    public class AsyncDispatcher : MonoBehaviour, IInterfaceElement
     {
 
         private static List<AsyncTask> _a;
         private static ThreadPool _pool;
         private static bool _useDotNetThreadPool;
         public bool UseDotNetThreadPool;
-
+        public int ThreadCount;
         private void Start()
         {
-            _a = new List<AsyncTask>();
-            _useDotNetThreadPool = UseDotNetThreadPool;
-            if (!UseDotNetThreadPool)
-            {
-                _pool = new ThreadPool(1);
-            }
-            else
-            {
-                System.Threading.ThreadPool.SetMaxThreads(Environment.ProcessorCount, Environment.ProcessorCount);
-            }
+            Refresh();
         }
 
         private void Update()
@@ -65,6 +58,20 @@ namespace Assets.SimpleGenerator
                 {
                     _pool.QueueTask(asyncTask);
                 }
+            }
+        }
+
+        public void Refresh()
+        {
+            _a = new List<AsyncTask>();
+            _useDotNetThreadPool = UseDotNetThreadPool;
+            if (!UseDotNetThreadPool)
+            {
+                _pool = new ThreadPool(1);
+            }
+            else
+            {
+                System.Threading.ThreadPool.SetMaxThreads(Environment.ProcessorCount, Environment.ProcessorCount);
             }
         }
     }

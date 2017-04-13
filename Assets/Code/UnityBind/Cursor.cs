@@ -24,7 +24,7 @@ namespace Code.UnityBind
             if (Generator.CurrentChunkPosition != currentNormalizedPosition)
             {
                 Generator.CurrentChunkPosition = currentNormalizedPosition;
-                Generator.Refresh();
+                Generator.RefreshChunks();
             }
             Generator.CurrentChunkPosition = currentNormalizedPosition;
 

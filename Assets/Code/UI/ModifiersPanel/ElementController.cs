@@ -7,7 +7,7 @@ using UnityEngine.SocialPlatforms;
 using UnityEngine.UI;
 namespace Code.UI.ModifiersPanel
 {
-    public class ModifierController : ListView<FieldInfo, NumberController>
+    public class ElementController : ListView<FieldInfo, NumberController>
     {
         public MonoBehaviour Modifier;
         public Text NameLabel;
