@@ -25,7 +25,6 @@ namespace Assets.SimpleGenerator
 
         public void Refresh()
         {
-            _storage.ResetTrees();
             var chunkTime = DateTime.UtcNow;
             _refreshTask = new AsyncTask(() =>
                 {

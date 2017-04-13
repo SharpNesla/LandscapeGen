@@ -99,7 +99,7 @@ namespace Assets.SimpleGenerator
                     var chunk = terrain.gameObject.AddComponent<UnityChunk>();
                     chunk.Parent = this;
                     chunk.Terra = terrain;
-                    chunk.Position = new Pair((int) x, (int) y);
+                    chunk.Position = new Pair(x, y);
                     chunks.Add(chunk);
                 }
             }

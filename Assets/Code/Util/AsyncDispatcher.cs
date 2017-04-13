@@ -8,6 +8,7 @@ namespace Assets.SimpleGenerator
 {
     public class AsyncDispatcher : MonoBehaviour
     {
+
         private static List<AsyncTask> _a;
         private static ThreadPool _pool;
         private static bool _useDotNetThreadPool;
@@ -19,7 +20,7 @@ namespace Assets.SimpleGenerator
             _useDotNetThreadPool = UseDotNetThreadPool;
             if (!UseDotNetThreadPool)
             {
-                _pool = new ThreadPool(Environment.ProcessorCount - 2);
+                _pool = new ThreadPool(1);
             }
             else
             {
