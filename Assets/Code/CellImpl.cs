@@ -43,5 +43,6 @@ namespace Assets.SimpleGenerator
                    LocalPosition.X < Core.Resolution &&
                    LocalPosition.Y < Core.Resolution;
         }
+
     }
 }

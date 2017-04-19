@@ -1,19 +1,19 @@
 ﻿using Assets.SimpleGenerator;
 using Assets.SimpleGenerator.TerrainModules;
-using Code.Modifiers.Biomes;
 using UnityEngine;
+using UnityEngine.Assertions.Must;
 
-namespace SimpleGenerator.Modifiers.Biomes
+namespace Code.Modifiers.Biomes
 {
     [RequireComponent(typeof(UnityChunkedGenerator))]
-    public class Beach : Biome<CellImpl>
+    public class Ocean : Biome<CellImpl>
     {
         public int GrassCount;
         public TerrainTexture SplatTexture;
         private int _index;
         public override void Callback(CellImpl current)
         {
-            if (current.Height < 0.301f)
+            if (current.Height < 0.3f)
             {
                 current.Biomes.Clear();
                 current.Biomes.Add(this);
