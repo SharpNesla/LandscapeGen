@@ -9,7 +9,6 @@ namespace Code.Modifiers.Biomes
     public class Cliff : Biome<CellImpl>
     {
         public TerrainTexture SplatTexture;
-        private int _index;
         public override void Callback(CellImpl current)
         {
             current.Biomes.Add(this);
@@ -21,7 +20,7 @@ namespace Code.Modifiers.Biomes
         }
         public override void ApplyPrototypes(Terrain terrain)
         {
-            _index = SplatTexture.ApplyTexture(terrain);
+            SplatTexture.ApplyTexture(terrain);
         }
     }
 }

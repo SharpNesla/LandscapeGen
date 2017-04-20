@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using Assets.SimpleGenerator;
 using Assets.SimpleGenerator.TerrainModules;
 using LibNoise.Generator;
@@ -6,8 +7,7 @@ using UnityEngine;
 
 namespace Code.Modifiers.Biomes
 {
-    [RequireComponent(typeof(UnityChunkedGenerator))]
-    public class RegularForest : Biome<CellImpl>
+    public class MountainForest : Biome<CellImpl>
     {
         public float TopBound;
         public float LowBound;
@@ -19,14 +19,11 @@ namespace Code.Modifiers.Biomes
 
         public TerrainObject Tree;
 
-        protected Perlin _hillModulator;
+        private Perlin _hillModulator;
 
         public override void Start()
         {
-            var grassBiome = gameObject.GetComponent<Grass>();
             _hillModulator = new Perlin{OctaveCount = 1, Frequency = ForestModulatorFrequency, Seed = 34};
-            TopBound = grassBiome.TopBound;
-            LowBound = grassBiome.LowBound;
         }
 
         public override void Callback(CellImpl current)
@@ -34,8 +31,7 @@ namespace Code.Modifiers.Biomes
             var value = current.Position.RandomFromPosition(0, TreeChance, 54);
             if (current.Height < TopBound && current.Height > LowBound
                 &&value == 0 &&
-                _hillModulator.GetValue(current.Position.X, 0, current.Position.Y) > 0.07
-                && current.Biomes.Any(x=>x.GetType() == typeof(Grass)))
+                _hillModulator.GetValue(current.Position.X, 0, current.Position.Y) > 0.07)
             {
                 current.Biomes.Add(this);
             }
@@ -62,6 +58,7 @@ namespace Code.Modifiers.Biomes
 
         public override void ApplyPrototypes(Terrain terrain)
         {
+
             Tree.ApplyTree(terrain);
         }
     }

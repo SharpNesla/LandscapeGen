@@ -10,6 +10,10 @@ namespace Assets.SimpleGenerator.TerrainModules
         public float BendFactor;
         public int MinimalTreeScale;
         public int MaximalTreeScale;
+
+        [HideInInspector]
+        public int TerrainIndex;
+
         public TreePrototype ToTreePrototype()
         {
             var i = new TreePrototype
@@ -20,13 +24,14 @@ namespace Assets.SimpleGenerator.TerrainModules
             return i;
         }
 
-        public int ApplyTree(Terrain terrain)
+        public void ApplyTree(Terrain terrain)
         {
             var treeprotos = terrain.terrainData.treePrototypes;
             Array.Resize(ref treeprotos, treeprotos.Length+1);
             treeprotos[treeprotos.Length - 1] = ToTreePrototype();
             terrain.terrainData.treePrototypes = treeprotos;
-            return treeprotos.Length - 1;
+
+            this.TerrainIndex = treeprotos.Length - 1;
         }
 
     }

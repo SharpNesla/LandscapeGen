@@ -27,14 +27,16 @@ namespace Code.Modifiers.Biomes
         public override void Apply(CellImpl current, TerrainStorage storage)
         {
             storage.SplatMap[current.LocalPosition.X, current.LocalPosition.Y, 0] = 0f;
-            storage.SplatMap[current.LocalPosition.X, current.LocalPosition.Y, _index] = 1f;
-            storage.DetailLayers[_detailIndex][current.LocalPosition.X, current.LocalPosition.Y] = GrassCount;
+            storage.SplatMap[current.LocalPosition.X, current.LocalPosition.Y,
+                SplatTexture.TerrainIndex] = 1f;
+            storage.DetailLayers[_detailIndex]
+                [current.LocalPosition.X, current.LocalPosition.Y] = GrassCount;
         }
 
         public override void ApplyPrototypes(Terrain terrain)
         {
            _detailIndex = GrassDetailLayer.ApplyGrass(terrain);
-           _index = SplatTexture.ApplyTexture(terrain);
+           SplatTexture.ApplyTexture(terrain);
         }
 
     }

@@ -30,9 +30,9 @@ namespace Code.Modifiers.Biomes
         {
             TreeInstance instance = new TreeInstance
             {
-                prototypeIndex = _index,
+                prototypeIndex = Rock.TerrainIndex,
                 rotation = current.Position.RandomFromPosition(0, 359,54),
-                heightScale = (float) current.Position.RandomFromPosition(Rock.MinimalTreeScale,Rock.MaximalTreeScale,54) / 10,
+                heightScale = 1f,
                 position = new Vector3 ((float) current.LocalPosition.Y / localScale, current.Height,
                     (float) current.LocalPosition.X / localScale)
             };
@@ -41,7 +41,7 @@ namespace Code.Modifiers.Biomes
         }
         public override void ApplyPrototypes(Terrain terrain)
         {
-            _index = Rock.ApplyTree(terrain);
+            Rock.ApplyTree(terrain);
         }
     }
 }

@@ -15,6 +15,8 @@ namespace Assets.SimpleGenerator.TerrainModules
         public float Smoothness;
         public Color Specular;
         public Vector2 Offset, Size;
+        [HideInInspector]
+        public int TerrainIndex;
         public SplatPrototype ToSplatPrototype()
         {
             var spl = new SplatPrototype
@@ -30,13 +32,14 @@ namespace Assets.SimpleGenerator.TerrainModules
             return spl;
         }
 
-        public int ApplyTexture(Terrain terrain)
+        public void ApplyTexture(Terrain terrain)
         {
             var splatprotos = terrain.terrainData.splatPrototypes;
             Array.Resize(ref splatprotos, splatprotos.Length+1);
             splatprotos[splatprotos.Length - 1] = ToSplatPrototype();
             terrain.terrainData.splatPrototypes = splatprotos;
-            return splatprotos.Length - 1;
+
+            this.TerrainIndex = splatprotos.Length - 1;
         }
     }
 }

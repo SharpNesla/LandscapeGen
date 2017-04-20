@@ -15,15 +15,15 @@ SpeedTreeImporter:
     reflectionProbeUsage: 1
     enableBump: 1
     enableHue: 1
-    windQuality: 2
-  - height: 0.4565069
+    windQuality: 4
+  - height: 0.78859955
     castShadows: 1
     receiveShadows: 1
     useLightProbes: 0
     reflectionProbeUsage: 1
     enableBump: 1
     enableHue: 1
-    windQuality: 2
+    windQuality: 4
   - height: 0.09912485
     castShadows: 1
     receiveShadows: 0
@@ -31,8 +31,8 @@ SpeedTreeImporter:
     reflectionProbeUsage: 1
     enableBump: 0
     enableHue: 1
-    windQuality: 1
-  - height: 0.009787884
+    windQuality: 2
+  - height: 0.01802497
     castShadows: 1
     receiveShadows: 0
     useLightProbes: 0

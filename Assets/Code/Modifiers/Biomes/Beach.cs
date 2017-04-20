@@ -8,9 +8,7 @@ namespace SimpleGenerator.Modifiers.Biomes
     [RequireComponent(typeof(UnityChunkedGenerator))]
     public class Beach : Biome<CellImpl>
     {
-        public int GrassCount;
         public TerrainTexture SplatTexture;
-        private int _index;
         public override void Callback(CellImpl current)
         {
             if (current.Height < 0.301f)
@@ -23,12 +21,13 @@ namespace SimpleGenerator.Modifiers.Biomes
         public override void Apply(CellImpl current, TerrainStorage storage)
         {
             storage.SplatMap[current.LocalPosition.X, current.LocalPosition.Y, 0] = 0f;
-            storage.SplatMap[current.LocalPosition.X, current.LocalPosition.Y, _index] = 1f;
+            storage.SplatMap[current.LocalPosition.X, current.LocalPosition.Y,
+                SplatTexture.TerrainIndex] = 1f;
         }
 
         public override void ApplyPrototypes(Terrain terrain)
         {
-            _index = SplatTexture.ApplyTexture(terrain);
+            SplatTexture.ApplyTexture(terrain);
         }
 
     }
