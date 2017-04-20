@@ -49,7 +49,7 @@ namespace Code.Modifiers.Biomes
                 prototypeIndex = Tree.TerrainIndex,
                 rotation = current.Position.RandomFromPosition(0, 359,54),
                 heightScale = (float) current.Position.RandomFromPosition(Tree.MinimalTreeScale,Tree.MaximalTreeScale,54) / 10,
-                position = new Vector3 ((float) current.LocalPosition.Y / localScale, current.Height,
+                position = new Vector3 ((float) current.LocalPosition.Y / localScale, current.Height - 0.001f,
                     (float) current.LocalPosition.X / localScale)
             };
             instance.widthScale = instance.heightScale;
