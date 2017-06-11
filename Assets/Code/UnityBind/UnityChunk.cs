@@ -1,48 +1,42 @@
 ﻿using System;
 using SimpleGenerator.Util;
+using UnityEditor;
 using UnityEngine;
 
 namespace Assets.SimpleGenerator
 {
-    public class UnityChunk : MonoBehaviour
+    public class UnityChunk
     {
-        public Terrain Terra;
-        public UnityChunkedGenerator Parent;
+        public Terrain Terrain;
+        public TerracoreGenerator Parent;
 
         public Pair Position;
         public AsyncTask _refreshTask;
         private TerrainStorage _storage;
 
-
-        public void Start()
+        [ExecuteInEditMode]
+        public void Create()
         {
-            _storage = TerrainStorage.FromTerrainData(Terra.terrainData);
+            _storage = TerrainStorage.FromTerrainData(Terrain.terrainData);
+            AssetDatabase.CreateAsset(Terrain.terrainData,
+                String.Format("Assets/Terracore Terrains Data/Chunk({0};{1}).asset",
+                    Position.X - Parent.GenerationPatchOffset.x,
+                    Position.Y - Parent.GenerationPatchOffset.y));
+                Terrain.gameObject.name = String.Format("Chunk({0};{1})",
+                Position.X - Parent.GenerationPatchOffset.x,
+                Position.Y - Parent.GenerationPatchOffset.y);
+            var resolution = Parent.TerrainSettings.Resolution;
+            var scale = Parent.TerrainSettings.TerrainScale;
+            var coordinates = new Pair(Position.X * resolution, Position.Y * resolution);
+            var size = new Pair(resolution, resolution);
 
-            gameObject.GetComponent<TerrainCollider>().terrainData = Terra.terrainData;
+            _storage.ApplyCells(Parent.Core, size, coordinates);
+            Terrain.terrainData.ApplyTerrainStorage(_storage);
 
-            _refreshTask = new AsyncTask(()=> {},()=>{});
-        }
 
-        public void Refresh()
-        {
-            var chunkTime = DateTime.UtcNow;
-            _refreshTask = new AsyncTask(() =>
-                {
-                    chunkTime = DateTime.Now;
-                    var coordinates = new Pair(Position.X * Parent.TerrainSettings.Resolution, Position.Y * Parent.TerrainSettings.Resolution);
-                    var size = new Pair(Parent.TerrainSettings.Resolution, Parent.TerrainSettings.Resolution);
-                    _storage.ApplyCells(Parent.Core, size, coordinates);
-                },
-                () =>
-                {
-                    Terra.terrainData.ApplyTerrainStorage(_storage);
-
-                    gameObject.transform.position = new Vector3(Position.X * Parent.TerrainSettings.TerrainScale.x, 0,
-                        Position.Y * Parent.TerrainSettings.TerrainScale.x);
-                    Debug.LogFormat("Refreshing chunk -> x:{0}, y:{1}, <>:{2}", Position.X, Position.Y, DateTime.Now - chunkTime);
-                }
-            );
-            AsyncDispatcher.Queue(_refreshTask);
+            Terrain.gameObject.transform.position = new Vector3((Position.X - Parent.GenerationPatchOffset.x) * scale.x,
+                0, (Position.Y - Parent.GenerationPatchOffset.y) * scale.z);
+            Debug.LogFormat("Refreshing chunk -> x:{0}, y:{1}, <>", Position.X, Position.Y);
         }
     }
 }

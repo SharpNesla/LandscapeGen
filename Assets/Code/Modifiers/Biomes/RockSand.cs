@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Code.Modifiers.Biomes
 {
-    [RequireComponent(typeof(UnityChunkedGenerator))]
+    [RequireComponent(typeof(TerracoreGenerator))]
     public class RockSand : Biome<CellImpl>
     {
         public float TopBound, LowBound;

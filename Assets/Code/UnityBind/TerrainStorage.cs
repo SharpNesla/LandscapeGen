@@ -30,7 +30,7 @@ namespace Assets.SimpleGenerator
                 DetailLayers[i] = new int[data.detailHeight, data.detailWidth];
             }
 
-            Instances = new List<TreeInstance>(10000);
+            Instances = new List<TreeInstance>();
         }
 
         public static TerrainStorage FromTerrainData(TerrainData data)
@@ -38,45 +38,20 @@ namespace Assets.SimpleGenerator
             return new TerrainStorage(data);
         }
 
-        public void Reset(Pair size, Pair position)
+        public void ResetTrees()
         {
             Instances.Clear();
-            for (var y = 0; y < size.X; y++)
-            {
-                for (var x = 0; x < size.X; x++)
-                {
-                    for (int i = 0; i < SplatMap.GetLength(2); i++)
-                    {
-                        SplatMap[x, y, i] = 0;
-                    }
-                }
-            }
-            for (int i = 0; i < DetailLayers.Length; i++)
-            {
-                for (var y = 0; y < size.X; y++)
-                {
-                    for (var x = 0; x < size.X; x++)
-                    {
-                        DetailLayers[i][x, y] = 0;
-                    }
-                }
-            }
         }
-
         public void ApplyCells(CoreImpl core, Pair size, Pair position)
         {
             var cells = core.GetChunk(position);
-            Reset(size, position);
+
             for (var y = 0; y < size.X; y++)
             {
                 for (var x = 0; x < size.X; x++)
                 {
                     var cell = cells[x + 1, y + 1];
                     Heights[x,y] = cells[x, y].Height;
-                    for (int i = 0; i < SplatMap.GetLength(2); i++)
-                    {
-                        SplatMap[x, y, i] = 0;
-                    }
                     for (var index = 0; index < cell.Biomes.Count; index++)
                     {
                         var biome = cell.Biomes[index];

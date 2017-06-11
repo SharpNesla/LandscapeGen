@@ -5,7 +5,7 @@ using UnityEngine.Assertions.Must;
 
 namespace Code.Modifiers.Biomes
 {
-    [RequireComponent(typeof(UnityChunkedGenerator))]
+    [RequireComponent(typeof(TerracoreGenerator))]
     public class Ocean : Biome<CellImpl>
     {
         public int GrassCount;

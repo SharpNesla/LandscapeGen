@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace Code.Modifiers.Biomes
 {
-    [RequireComponent(typeof(UnityChunkedGenerator))]
+    [RequireComponent(typeof(TerracoreGenerator))]
     public class Grass : Biome<CellImpl>
     {
         public float TopBound, LowBound;

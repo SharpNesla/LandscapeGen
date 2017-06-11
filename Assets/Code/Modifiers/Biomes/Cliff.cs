@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Code.Modifiers.Biomes
 {
-    [RequireComponent(typeof(UnityChunkedGenerator))]
+    [RequireComponent(typeof(TerracoreGenerator))]
     public class Cliff : Biome<CellImpl>
     {
         public TerrainTexture SplatTexture;

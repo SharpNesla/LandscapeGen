@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace SimpleGenerator.Modifiers.Biomes
 {
-    [RequireComponent(typeof(UnityChunkedGenerator))]
+    [RequireComponent(typeof(TerracoreGenerator))]
     public class Beach : Biome<CellImpl>
     {
         public TerrainTexture SplatTexture;

@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Code.Modifiers.Biomes
 {
-    [RequireComponent(typeof(UnityChunkedGenerator))]
+    [RequireComponent(typeof(TerracoreGenerator))]
     public class RockSpawner : Biome<CellImpl>
     {
         [Range(25, 10000)] public int RockChance;
