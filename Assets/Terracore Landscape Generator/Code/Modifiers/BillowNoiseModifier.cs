@@ -16,8 +16,6 @@ namespace Assets.SimpleGenerator
         public float HillModulatorFrequency;
         private Const WaterLevelOSC;
         private Select _selector;
-        public float maximumHeight;
-        public float minimumHeight;
         public float hillHeight;
         public float HillFallOff;
         public void Start()
@@ -36,13 +34,10 @@ namespace Assets.SimpleGenerator
 
 
             current.Height = f;
-            maximumHeight = Mathf.Max(maximumHeight, current.Height);
-            minimumHeight = Mathf.Min(minimumHeight, current.Height);
         }
 
         public void Refresh()
         {
-
             _noiseGenerator = new Billow{Frequency = Frequency,OctaveCount = Octaves, Seed = 34};
             _hillModulator = new Perlin{Frequency = HillModulatorFrequency, OctaveCount = 12};
             WaterLevelOSC = new Const(hillHeight);

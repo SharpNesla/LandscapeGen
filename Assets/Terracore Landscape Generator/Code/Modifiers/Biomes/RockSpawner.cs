@@ -10,8 +10,6 @@ namespace Code.Modifiers.Biomes
         [Range(25, 10000)] public int RockChance;
         public TerrainObject Rock;
 
-        private int _index;
-
         public override void Callback(CellImpl current)
         {
             var value = current.Position.RandomFromPosition(0, RockChance, 54);

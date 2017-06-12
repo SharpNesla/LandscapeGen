@@ -5,6 +5,7 @@ using System.Linq;
 using Assets.SimpleGenerator.TerrainModules;
 using Code.Core;
 using Code.Modifiers.Biomes;
+using JetBrains.Annotations;
 using UnityEditor;
 using UnityEngine;
 
@@ -13,19 +14,20 @@ namespace Assets.SimpleGenerator
     public class TerracoreGenerator : MonoBehaviour
     {
         public TerrainSettings TerrainSettings;
+        public string DataFolderPath = "Terracore Terrains Data";
         public Vector2 GenerationPatchOffset;
         public Vector2 TerrainsRectScale;
         public CoreImpl Core;
 
         public void Place()
         {
-            if (!AssetDatabase.IsValidFolder("Assets/Terracore Terrains Data"))
+            if (!AssetDatabase.IsValidFolder(String.Format("Assets/{0}", DataFolderPath)))
             {
-                AssetDatabase.CreateFolder("Assets","Terracore Terrains Data");
+                AssetDatabase.CreateFolder("Assets", DataFolderPath);
             }
             var modifiers = Array.FindAll(
                 gameObject.GetComponents<IModifier<CellImpl>>(),
-                modifier => ((MonoBehaviour) modifier).enabled);
+                modifier => ((MonoBehaviour)modifier).enabled);
             var biomes = modifiers.OfType<Biome<CellImpl>>();
 
             foreach (var modifier in modifiers)
@@ -33,7 +35,7 @@ namespace Assets.SimpleGenerator
                 modifier.Start();
             }
 
-            Core = new CoreImpl(CellInitializer,TerrainSettings.Resolution,
+            Core = new CoreImpl(CellInitializer, TerrainSettings.Resolution,
                 modifiers);
             CreateChunks(biomes);
         }
@@ -41,9 +43,9 @@ namespace Assets.SimpleGenerator
         public List<UnityChunk> CreateChunks(IEnumerable<Biome<CellImpl>> biomes)
         {
             var chunksCount = TerrainsRectScale.x * TerrainsRectScale.y;
-            var chunks = new List<UnityChunk>((int) chunksCount);
+            var chunks = new List<UnityChunk>((int)chunksCount);
 
-            int counter = 0, target = (int) (TerrainsRectScale.x * TerrainsRectScale.y);
+            int counter = 0, target = (int)(TerrainsRectScale.x * TerrainsRectScale.y);
 
             for (float y = GenerationPatchOffset.y; y < TerrainsRectScale.x + GenerationPatchOffset.y; y++)
             {
@@ -57,7 +59,7 @@ namespace Assets.SimpleGenerator
                     }
                     var chunk = new UnityChunk
                     {
-                        Position = new Pair((int) x, (int) y),
+                        Position = new Pair((int)x, (int)y),
                         Parent = this,
                         Terrain = terrain
                     };
@@ -76,7 +78,7 @@ namespace Assets.SimpleGenerator
 
         private CellImpl CellInitializer(Pair coords)
         {
-            return new CellImpl(coords) {Core = Core};
+            return new CellImpl(coords) { Core = this.Core };
         }
     }
 }

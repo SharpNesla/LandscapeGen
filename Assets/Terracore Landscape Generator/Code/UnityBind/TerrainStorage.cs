@@ -46,7 +46,7 @@ namespace Assets.SimpleGenerator
         {
             var cells = core.GetChunk(position);
 
-            for (var y = 0; y < size.X; y++)
+            for (var y = 0; y < size.Y; y++)
             {
                 for (var x = 0; x < size.X; x++)
                 {

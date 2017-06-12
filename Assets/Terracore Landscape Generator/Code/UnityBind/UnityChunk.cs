@@ -1,5 +1,4 @@
 ﻿using System;
-using SimpleGenerator.Util;
 using UnityEditor;
 using UnityEngine;
 
@@ -11,7 +10,6 @@ namespace Assets.SimpleGenerator
         public TerracoreGenerator Parent;
 
         public Pair Position;
-        public AsyncTask _refreshTask;
         private TerrainStorage _storage;
 
         [ExecuteInEditMode]
@@ -19,9 +17,10 @@ namespace Assets.SimpleGenerator
         {
             _storage = TerrainStorage.FromTerrainData(Terrain.terrainData);
             AssetDatabase.CreateAsset(Terrain.terrainData,
-                String.Format("Assets/Terracore Terrains Data/Chunk({0};{1}).asset",
+                String.Format("Assets/{2}/Chunk({0};{1}).asset",
                     Position.X - Parent.GenerationPatchOffset.x,
-                    Position.Y - Parent.GenerationPatchOffset.y));
+                    Position.Y - Parent.GenerationPatchOffset.y,
+                    Parent.DataFolderPath));
                 Terrain.gameObject.name = String.Format("Chunk({0};{1})",
                 Position.X - Parent.GenerationPatchOffset.x,
                 Position.Y - Parent.GenerationPatchOffset.y);

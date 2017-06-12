@@ -8,7 +8,6 @@ namespace Code.Modifiers.Biomes
     [RequireComponent(typeof(TerracoreGenerator))]
     public class Ocean : Biome<CellImpl>
     {
-        public int GrassCount;
         public TerrainTexture SplatTexture;
         public override void Callback(CellImpl current)
         {
