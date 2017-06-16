@@ -32,14 +32,14 @@ SpeedTreeImporter:
     enableBump: 0
     enableHue: 1
     windQuality: 2
-  - height: 0.017219868
+  - height: 0.011639614
     castShadows: 1
     receiveShadows: 0
     useLightProbes: 0
     reflectionProbeUsage: 0
     enableBump: 1
     enableHue: 1
-    windQuality: 0
+    windQuality: 1
   enableSmoothLODTransition: 0
   animateCrossFading: 1
   billboardTransitionCrossFadeWidth: 0.25
