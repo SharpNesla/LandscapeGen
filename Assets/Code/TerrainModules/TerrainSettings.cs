@@ -52,7 +52,7 @@ namespace Assets.SimpleGenerator.TerrainModules
             terrain.detailObjectDistance = DetailDistance;
             terrain.reflectionProbeUsage = ReflectionProbeUsage;
             terrain.treeBillboardDistance = BillboardStart;
-            terrain.treeDistance = FadeLength;
+            terrain.treeDistance = TreeDistance;
             terrain.treeMaximumFullLODCount = MaxTreeMeshes;
             terrain.materialType = MaterialType;
             return terrain;

@@ -33,7 +33,7 @@ namespace Code.Modifiers.Biomes
                 prototypeIndex = Rock.TerrainIndex,
                 rotation = current.Position.RandomFromPosition(0, 359,54),
                 heightScale = 1f,
-                position = new Vector3 ((float) current.LocalPosition.Y / localScale, current.Height,
+                position = new Vector3 ((float) current.LocalPosition.Y / localScale, current.Height - 0.0005f,
                     (float) current.LocalPosition.X / localScale)
             };
             instance.widthScale = instance.heightScale;
